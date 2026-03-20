@@ -5,89 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReviewMarket - Регистрация</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { accent: '#4f46e5', bgMain: '#f9fafb' }
-                }
-            }
-        }
-    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        * { transition: all 0.2s ease-in-out; }
-        .input-custom {
-            width: 100%; background: white; border: 1px solid #f3f4f6;
-            padding: 1.25rem 2rem; border-radius: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); font-size: 1.1rem; outline: none;
-        }
-        .input-custom:focus { border-color: #4f46e5; box-shadow: 0 10px 15px -3px rgba(79,70,229,0.1); }
+        .input-custom { width: 100%; background: white; border: 1px solid #f3f4f6; padding: 1.25rem 2rem; border-radius: 1.5rem; outline: none; margin-bottom: 1rem; }
+        .input-custom:focus { border-color: #4f46e5; }
     </style>
 </head>
-<body class="bg-bgMain font-sans text-gray-900 min-h-screen flex flex-col">
+<body class="bg-[#f9fafb] font-sans text-gray-900 min-h-screen flex flex-col">
     <header class="p-6">
-        <div onclick="window.location.href='GlavniyOtsif.html'" class="cursor-pointer inline-flex items-center gap-2">
-            <div class="bg-accent w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">R</div>
-            <span class="font-bold text-gray-900">ReviewMarket</span>
+        <div onclick="window.location.href='index.html'" class="cursor-pointer inline-flex items-center gap-2">
+            <div class="bg-[#4f46e5] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">R</div>
+            <span class="font-bold">Назад на главную</span>
         </div>
     </header>
 
     <main class="flex-grow flex flex-col items-center justify-center p-6 text-center">
-        <div class="max-w-md w-full">
-            <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl border border-gray-100">
-                <h1 class="text-3xl font-extrabold tracking-tighter mb-2">Создать аккаунт</h1>
-                <p class="text-gray-500 mb-8 text-sm">Присоединяйся к лучшим</p>
-
-                <form class="space-y-4 text-left" onsubmit="event.preventDefault(); registerUser();">
-                    <input type="text" id="username" placeholder="Придумайте логин" class="input-custom" required>
-                    <input type="email" id="email" placeholder="Ваш Email" class="input-custom" required>
-                    <input type="password" id="password" placeholder="Придумайте пароль" class="input-custom" required>
-                    
-                    <button type="submit" id="regBtn" class="w-full bg-gray-950 text-white font-bold py-5 rounded-3xl shadow-lg hover:bg-accent hover:-translate-y-1 active:scale-95 transition-all mt-4">
-                        Зарегистрироваться
-                    </button>
-                </form>
-
-                <p class="mt-8 text-sm text-gray-500">
-                    Уже есть аккаунт? <a href="#" class="text-accent font-bold hover:underline">Войти</a>
-                </p>
-            </div>
+        <div class="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-2xl border border-gray-100">
+            <h1 class="text-3xl font-extrabold mb-8">Регистрация</h1>
+            <form onsubmit="event.preventDefault(); registerUser();">
+                <input type="text" id="username" placeholder="Логин" class="input-custom" required>
+                <input type="email" id="email" placeholder="Email" class="input-custom" required>
+                <input type="password" id="password" placeholder="Пароль" class="input-custom" required>
+                <button type="submit" id="regBtn" class="w-full bg-black text-white font-bold py-5 rounded-3xl shadow-lg hover:bg-[#4f46e5] transition-all">Создать аккаунт</button>
+            </form>
         </div>
     </main>
 
     <script>
         async function registerUser() {
             const btn = document.getElementById('regBtn');
-            btn.disabled = true; btn.innerText = 'Создаем...';
-
+            btn.innerText = 'Создаем...';
             const userData = {
                 username: document.getElementById('username').value,
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value
             };
-
             try {
-                // Шлем запрос на тот же Render
                 const res = await fetch('https://review-market.onrender.com/register', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(userData)
                 });
-
                 if(res.ok) {
                     alert('Регистрация прошла успешно!');
-                    window.location.href = 'GlavniyOtsif.html';
+                    window.location.href = 'index.html';
                 } else {
-                    const error = await res.json();
-                    alert(error.message || 'Ошибка регистрации');
+                    const result = await res.json();
+                    alert(result.message || 'Ошибка');
                 }
-            } catch(e) {
-                alert('Сервер недоступен');
-            } finally {
-                btn.disabled = false; btn.innerText = 'Зарегистрироваться';
-            }
+            } catch(e) { alert('Сервер не отвечает'); }
+            btn.innerText = 'Создать аккаунт';
         }
     </script>
 </body>
