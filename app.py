@@ -6,9 +6,9 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Разрешаем запросы с GitHub Pages
 
-# ТВОИ ДАННЫЕ ИЗ ПРЕДЫДУЩИХ СООБЩЕНИЙ
-TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0" # Твой токен бота
-ADMIN_ID = "7062047050" # Твой Telegram ID
+# ТВОИ ОБНОВЛЕННЫЕ ДАННЫЕ
+TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0"
+ADMIN_ID = "7062047050"
 
 def send_tg_message(text):
     """Отправка сообщения в Telegram"""
@@ -27,14 +27,14 @@ def send_tg_message(text):
 
 @app.route('/')
 def home():
-    # ФИКС: Убрали спам при запуске. Теперь сервер просто отвечает текстом.
+    # ФИКС: Просто текстовый ответ, чтобы бот не спамил в личку
     return "ReviewMarket Server: Online and Ready!"
 
 @app.route('/order', methods=['POST'])
 def send_order():
     data = request.json
     
-    # Формируем красивый текст заказа, как на твоем скриншоте
+    # Формируем красивый текст заказа
     order_text = (
         "🚀 **НОВЫЙ ЗАКАЗ!**\n\n"
         f"📍 **Тип:** {data.get('type')}\n"
@@ -52,10 +52,10 @@ def send_order():
 
 @app.route('/register', methods=['POST'])
 def register():
-    # Ответ для страницы регистрации
+    # Ответ для страницы регистрации (пока просто успех)
     return jsonify({"status": "success"}), 200
 
 if __name__ == '__main__':
-    # Настройка порта для Render
+    # Автоматический выбор порта для Render
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
