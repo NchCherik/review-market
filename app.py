@@ -8,8 +8,8 @@ app = Flask(__name__)
 CORS(app)
 
 # --- НАСТРОЙКИ TELEGRAM ---
-BOT_TOKEN = "ВСТАВЬ_СЮДА_ТОКЕН_ОТ_BOTFATHER"
-ADMIN_ID = "ВСТАВЬ_СЮДА_СВОЙ_ID"
+BOT_TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0"
+ADMIN_ID = "7062047050"
 
 # --- РАБОТА С БАЗОЙ ДАННЫХ ---
 def init_db():
