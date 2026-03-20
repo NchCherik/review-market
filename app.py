@@ -7,8 +7,8 @@ app = Flask(__name__)
 CORS(app)  # Разрешаем запросы с GitHub Pages
 
 # ТВОИ ДАННЫЕ ИЗ ПРЕДЫДУЩИХ СООБЩЕНИЙ
-TOKEN = "7547690186:AAEn_T-Y47-rT-qP47v5_Xo3vXo3vXo3vXo" # Твой токен бота
-ADMIN_ID = "1214154425" # Твой Telegram ID
+TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0" # Твой токен бота
+ADMIN_ID = "7062047050" # Твой Telegram ID
 
 def send_tg_message(text):
     """Отправка сообщения в Telegram"""
