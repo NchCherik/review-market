@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReviewMarket - Заказ Telegram</title>
+    <title>ReviewMarket - Отзывы Telegram</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,15 +31,12 @@
         <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div onclick="window.location.href='index.html'" class="cursor-pointer flex items-center gap-2">
                 <div class="bg-accent w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">R</div>
+                <span class="font-bold text-gray-900">ReviewMarket</span>
             </div>
             <div class="flex items-center gap-3">
                 <div class="bg-gray-100 text-gray-700 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 border border-gray-200 shadow-inner">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                    </svg>
                     <span class="font-bold">0 ₽</span>
                 </div>
-                <button class="bg-accent text-white font-semibold text-sm px-6 py-2 rounded-full shadow-md hover:bg-opacity-90 active:scale-95 transition-transform">Логин</button>
             </div>
         </nav>
     </header>
@@ -47,19 +44,22 @@
     <main class="flex-grow flex flex-col items-center justify-center p-6 text-center">
         <div class="max-w-3xl w-full">
             <div class="inline-block bg-white px-10 py-6 rounded-3xl shadow-xl border border-gray-100 mb-12">
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-gray-950">Накрутка <span class="text-accent">Telegram</span></h1>
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-gray-950">Отзывы <span class="text-accent">Telegram</span></h1>
             </div>
+            
             <form class="space-y-6 text-left" onsubmit="event.preventDefault(); sendOrder();">
-                <input type="text" id="target" placeholder="Название канала/группы" class="input-custom" required>
-                <input type="text" id="focus" placeholder="Что именно крутим? (Подписчики/Просмотры)" class="input-custom" required>
-                <input type="number" id="quantity" placeholder="Количество" class="input-custom" required>
-                <input type="text" id="link" placeholder="Ссылка на пост или канал" class="input-custom" required>
+                <input type="text" id="target" placeholder="Ссылка на канал или группу" class="input-custom" required>
+                <input type="text" id="focus" placeholder="Тематика отзывов (например: Живые/Положительные)" class="input-custom" required>
+                <input type="number" id="quantity" placeholder="Количество отзывов" class="input-custom" required>
+                <input type="text" id="link" placeholder="Ссылка на пост (если нужно)" class="input-custom" required>
+                
                 <div class="relative pt-2">
                     <input type="text" id="contact" placeholder="@username для связи" class="input-custom border-accent/20 bg-blue-50/30 font-semibold text-accent" required>
                     <span class="absolute top-[-5px] left-6 bg-white px-2 text-[10px] font-extrabold text-accent uppercase tracking-widest border border-accent/10 rounded-full">Контакты покупателя</span>
                 </div>
+
                 <div class="pt-6 flex justify-center">
-                    <button type="submit" id="btn" class="bg-gray-950 text-white text-xl font-bold px-16 py-5 rounded-3xl shadow-lg hover:bg-accent hover:-translate-y-1 active:scale-95 transition-all">Начать покупку</button>
+                    <button type="submit" id="btn" class="bg-gray-950 text-white text-xl font-bold px-16 py-5 rounded-3xl shadow-lg hover:bg-accent hover:-translate-y-1 active:scale-95 transition-all">Заказать отзывы</button>
                 </div>
             </form>
         </div>
@@ -72,7 +72,7 @@
             btn.innerText = 'Отправка...';
 
             const data = {
-                type: 'Telegram', 
+                type: 'Telegram Отзывы', 
                 target: document.getElementById('target').value,
                 focus: document.getElementById('focus').value, 
                 quantity: document.getElementById('quantity').value,
@@ -87,20 +87,18 @@
                     body: JSON.stringify(data)
                 });
 
-                // ФИКС: Проверяем res.ok вместо сложного парсинга JSON
                 if(res.ok) { 
                     alert('Заказ успешно отправлен! Ожидайте сообщения в Telegram.'); 
                     window.location.href='index.html'; 
                 } else { 
-                    alert('Ошибка сервера. Но данные могли уйти. Проверьте Telegram.'); 
+                    alert('Ошибка при отправке. Но мы уже работаем над этим!'); 
                 }
             } catch(e) { 
-                // Если Render долго «просыпается», скрипт может упасть в ошибку, но заказ уйдет
-                alert('Связь установлена! Если заказ пришел в ТГ — всё отлично.'); 
+                alert('Заказ в процессе! Если пришел в ТГ — значит всё ок.'); 
                 window.location.href='index.html'; 
             } finally { 
                 btn.disabled = false; 
-                btn.innerText = 'Начать покупку'; 
+                btn.innerText = 'Заказать отзывы'; 
             }
         }
     </script>
