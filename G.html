@@ -29,7 +29,7 @@
 <body class="bg-bgMain font-sans text-gray-900 min-h-screen flex flex-col">
     <header class="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div onclick="window.location.href='GlavniyOtsif.html'" class="cursor-pointer flex items-center gap-2">
+            <div onclick="window.location.href='index.html'" class="cursor-pointer flex items-center gap-2">
                 <div class="bg-accent w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">R</div>
             </div>
             <div class="flex items-center gap-3">
@@ -85,7 +85,8 @@
                 });
                 if(res.ok) { 
                     alert('Заказ успешно отправлен! Ожидайте сообщения в Telegram.'); 
-                    window.location.href='GlavniyOtsif.html'; 
+                    // ИСПРАВЛЕНО: GlavniyOtsif.html -> index.html
+                    window.location.href='index.html'; 
                 } else { 
                     alert('Ошибка на стороне сервера. Пожалуйста, напишите в поддержку.'); 
                 }
