@@ -3,101 +3,72 @@ from flask_cors import CORS
 import requests
 import os
 import sqlite3
-import logging
-
-# Настраиваем логи, чтобы видеть ошибки в панели Render
-logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}) # Максимально разрешаем запросы с сайта
+# Разрешаем запросы со всех адресов, чтобы сайт мог достучаться до сервера
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-# --- ВСТАВЬ СВОИ ДАННЫЕ ТУТ ---
+# --- ТВОИ ДАННЫЕ УЖЕ ТУТ ---
 BOT_TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0"
 ADMIN_ID = "7062047050"
 
-def get_db_connection():
-    # Используем путь /tmp/, так как на Render это единственное место с правами записи
-    conn = sqlite3.connect('/tmp/users.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def init_db():
+# Функция для отправки сообщений в ТГ
+def send_tg_message(text):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE,
-                email TEXT,
-                password TEXT,
-                balance INTEGER DEFAULT 0
-            )
-        ''')
-        conn.commit()
-        conn.close()
-        logging.info("База данных успешно инициализирована")
-    except Exception as e:
-        logging.error(f"Ошибка БД: {e}")
+        res = requests.post(url, json={"chat_id": ADMIN_ID, "text": text, "parse_mode": "Markdown"})
+        return res.ok
+    except:
+        return False
 
-init_db()
+# 1. Проверка работы сервера (просто открой ссылку https://review-market.onrender.com/)
+@app.route('/')
+def home():
+    if send_tg_message("✅ **ReviewMarket:** Сервер успешно запущен и видит твой ID!"):
+        return "Бот работает! Проверь Телеграм."
+    return "Ошибка! Проверь, нажал ли ты START в боте."
 
+# 2. Регистрация нового пользователя
 @app.route('/register', methods=['POST', 'OPTIONS'])
 def register():
-    if request.method == 'OPTIONS':
-        return jsonify({}), 200
-    try:
-        data = request.json
-        username = data.get('username')
-        email = data.get('email')
-        password = data.get('password')
+    if request.method == 'OPTIONS': return jsonify({}), 200
+    data = request.json
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
 
-        conn = get_db_connection()
+    try:
+        # Используем /tmp/ для базы данных на Render
+        conn = sqlite3.connect('/tmp/users.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', 
-                       (username, email, password))
+        cursor.execute('CREATE TABLE IF NOT EXISTS users (username TEXT, email TEXT, password TEXT)')
+        cursor.execute('INSERT INTO users VALUES (?, ?, ?)', (username, email, password))
         conn.commit()
         conn.close()
-        
-        msg = f"🆕 Новый юзер: {username}\nEmail: {email}"
-        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", 
-                      json={"chat_id": ADMIN_ID, "text": msg})
-        
+
+        send_tg_message(f"🆕 **Новый пользователь!**\nЛогин: `{username}`\nEmail: `{email}`")
         return jsonify({"status": "ok"}), 201
-    except sqlite3.IntegrityError:
-        return jsonify({"status": "error", "message": "Логин занят"}), 400
     except Exception as e:
-        logging.error(f"Ошибка регистрации: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
+# 3. Прием заказов
 @app.route('/order', methods=['POST', 'OPTIONS'])
 def handle_order():
-    if request.method == 'OPTIONS':
-        return jsonify({}), 200
-    try:
-        data = request.json
-        message = (
-            f"🚀 НОВЫЙ ЗАКАЗ!\n\n"
-            f"📍 Площадка: {data.get('type')}\n"
-            f"📦 Объект: {data.get('target')}\n"
-            f"🎯 Фокус: {data.get('focus')}\n"
-            f"🔢 Кол-во: {data.get('quantity')}\n"
-            f"🔗 Ссылка: {data.get('link')}\n"
-            f"👤 Контакт: {data.get('contact')}"
-        )
-        
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        res = requests.post(url, json={"chat_id": ADMIN_ID, "text": message})
-        
-        if res.ok:
-            return jsonify({"status": "ok"}), 200
-        else:
-            logging.error(f"ТГ ошибка: {res.text}")
-            return jsonify({"status": "error"}), 400
-            
-    except Exception as e:
-        logging.error(f"Ошибка заказа: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
+    if request.method == 'OPTIONS': return jsonify({}), 200
+    data = request.json
+    message = (
+        f"🚀 **НОВЫЙ ЗАКАЗ!**\n\n"
+        f"📍 Тип: {data.get('type')}\n"
+        f"📦 Объект: {data.get('target')}\n"
+        f"🎯 Фокус: {data.get('focus')}\n"
+        f"🔢 Кол-во: {data.get('quantity')}\n"
+        f"🔗 Ссылка: {data.get('link')}\n"
+        f"👤 Контакт: {data.get('contact')}"
+    )
+    
+    if send_tg_message(message):
+        return jsonify({"status": "ok"}), 200
+    return jsonify({"status": "error"}), 400
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
