@@ -6,38 +6,26 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# ТВОИ ДАННЫЕ
 TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0"
-# Теперь это список, чтобы уведомления летели двоим
 ADMINS = ["7062047050", "7069587561"]
 
 def send_tg_message(text):
-    """Функция отправляет сообщение каждому админу из списка"""
     for admin_id in ADMINS:
         url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        payload = {
-            "chat_id": admin_id,
-            "text": text,
-            "parse_mode": "Markdown"
-        }
+        payload = {"chat_id": admin_id, "text": text, "parse_mode": "Markdown"}
         try:
-            # Таймаут 5 секунд, чтобы сервер не вис, если один из ID неверный
             requests.post(url, json=payload, timeout=5)
-        except Exception as e:
-            print(f"Ошибка отправки для {admin_id}: {e}")
+        except:
+            pass
     return True
 
 @app.route('/')
 def home():
-    # Оставляем просто текст, чтобы бот не спамил при каждом "просыпании" сервера
-    return "ReviewMarket Server: Online"
+    return "ReviewMarket Backend: Online"
 
 @app.route('/order', methods=['POST'])
 def send_order():
     data = request.json
-    if not data:
-        return jsonify({"status": "error", "message": "No data"}), 400
-        
     order_text = (
         "🚀 **НОВЫЙ ЗАКАЗ!**\n\n"
         f"📍 **Тип:** {data.get('type')}\n"
@@ -47,18 +35,19 @@ def send_order():
         f"🔗 **Ссылка:** {data.get('link')}\n"
         f"👤 **Контакт:** {data.get('contact')}"
     )
-    
-    # Вызываем рассылку всем админам
     send_tg_message(order_text)
-    
-    # Возвращаем четкий JSON, чтобы JS в HTML не выдавал ошибку
     return jsonify({"status": "success"}), 200
 
-@app.route('/register', methods=['POST'])
-def register():
-    # Твоя логика регистрации полностью сохранена
+@app.route('/auth-google', methods=['POST'])
+def auth_google():
     data = request.json
-    # (Здесь был твой код обработки регистрации, я его не трогал)
+    name = data.get('name')
+    email = data.get('email')
+    
+    # Уведомление в Телеграм о новом входе
+    msg = f"👤 **Вход через Google**\nИмя: {name}\nEmail: {email}"
+    send_tg_message(msg)
+    
     return jsonify({"status": "success"}), 200
 
 if __name__ == '__main__':
