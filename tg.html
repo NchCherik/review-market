@@ -32,10 +32,10 @@
         <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div onclick="window.location.href='index.html'" class="cursor-pointer flex items-center gap-2">
                 <div class="bg-accent w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">R</div>
-                <span class="font-bold text-gray-900 tracking-tighter">ReviewMarket</span>
+                <span class="font-bold text-gray-900">ReviewMarket</span>
             </div>
             <div class="flex items-center gap-3">
-                <div class="bg-gray-100 text-gray-700 px-5 py-2 rounded-full font-medium text-sm border border-gray-200 shadow-inner">
+                <div class="bg-gray-100 text-gray-700 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 border border-gray-200 shadow-inner">
                     <span id="user-balance" class="font-bold">0 ₽</span>
                 </div>
                 <div id="auth-section">
@@ -53,7 +53,7 @@
             </div>
             
             <form class="space-y-6 text-left" onsubmit="event.preventDefault(); sendOrder();">
-                <input type="text" id="target" placeholder="Ссылка на канал или группу" class="input-custom" required>
+                <input type="text" id="target" placeholder="Ссылка (например: t.me/название)" class="input-custom" required>
                 <input type="text" id="focus" placeholder="Тематика отзывов (Живые/Положительные)" class="input-custom" required>
                 <input type="number" id="quantity" placeholder="Количество отзывов (мин. 5)" class="input-custom" required>
                 <input type="text" id="link" placeholder="Ссылка на пост (если нужно)" class="input-custom">
@@ -71,7 +71,6 @@
     </main>
 
     <script>
-        // ЛОГИКА АВТОРИЗАЦИИ
         function onGoogleAuth(response) {
             const base64Url = response.credential.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -90,16 +89,22 @@
                         <button onclick="localStorage.removeItem('rm_user'); location.reload();" class="text-[10px] text-red-400 font-bold ml-1">ВЫХОД</button>
                     </div>`;
                 document.getElementById('contact-label').innerText = `ВХОД: ${user.name.split(' ')[0]}`;
+                if(!document.getElementById('contact').value) document.getElementById('contact').value = user.name;
             }
         }
 
         async function sendOrder() {
             const btn = document.getElementById('btn');
-            const qty = document.getElementById('quantity').value;
             const target = document.getElementById('target').value;
-
-            if (qty < 5) { alert('Минимальный заказ — 5 отзывов!'); return; }
-            if (!target.includes('http')) { alert('Введите полную ссылку!'); return; }
+            const qty = parseInt(document.getElementById('quantity').value);
+            
+            // Новая проверка ссылки (должна быть точка)
+            const urlPattern = /^[^\s]+\.[^\s]{2,}$/;
+            if (!urlPattern.test(target)) {
+                alert('Введите корректную ссылку с точкой (например: t.me/канал или site.com)');
+                return;
+            }
+            if (qty < 5 || isNaN(qty)) { alert('Минимальный заказ — 5 отзывов!'); return; }
 
             btn.disabled = true; btn.innerText = 'Отправка...';
             const user = JSON.parse(localStorage.getItem('rm_user'));
@@ -115,7 +120,7 @@
             };
 
             try {
-                const response = await fetch('https://review-market.onrender.com/order', {
+                await fetch('https://review-market.onrender.com/order', {
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
