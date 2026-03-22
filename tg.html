@@ -53,7 +53,7 @@
             </div>
             
             <form class="space-y-6 text-left" onsubmit="event.preventDefault(); sendOrder();">
-                <input type="text" id="target" placeholder="Ссылка (например: t.me/название)" class="input-custom" required>
+                <input type="text" id="target" placeholder="Ссылка (например: t.me/channel)" class="input-custom" required>
                 <input type="text" id="focus" placeholder="Тематика отзывов (Живые/Положительные)" class="input-custom" required>
                 <input type="number" id="quantity" placeholder="Количество отзывов (мин. 5)" class="input-custom" required>
                 <input type="text" id="link" placeholder="Ссылка на пост (если нужно)" class="input-custom">
@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="pt-6 flex justify-center">
-                    <button type="submit" id="btn" class="bg-gray-950 text-white text-xl font-bold px-16 py-5 rounded-3xl shadow-lg hover:bg-accent hover:-translate-y-1 active:scale-95 transition-all">Заказать отзывы</button>
+                    <button type="submit" id="btn" class="bg-gray-950 text-white text-xl font-bold px-16 py-5 rounded-3xl shadow-lg transition-all">Заказать отзывы</button>
                 </div>
             </form>
         </div>
@@ -81,33 +81,45 @@
 
         function renderUser() {
             const user = JSON.parse(localStorage.getItem('rm_user'));
+            const btn = document.getElementById('btn');
+            const authSection = document.getElementById('auth-section');
+            const contactLabel = document.getElementById('contact-label');
+
             if(user) {
-                document.getElementById('auth-section').innerHTML = `
+                authSection.innerHTML = `
                     <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm">
                         <img src="${user.picture}" class="w-6 h-6 rounded-full">
-                        <span class="font-bold text-xs">${user.name.split(' ')[0]}</span>
+                        <span class="font-bold text-xs text-black">${user.name.split(' ')[0]}</span>
                         <button onclick="localStorage.removeItem('rm_user'); location.reload();" class="text-[10px] text-red-400 font-bold ml-1">ВЫХОД</button>
                     </div>`;
-                document.getElementById('contact-label').innerText = `ВХОД: ${user.name.split(' ')[0]}`;
-                if(!document.getElementById('contact').value) document.getElementById('contact').value = user.name;
+                contactLabel.innerText = `ВХОД: ${user.name.split(' ')[0]}`;
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('hover:bg-accent', 'hover:-translate-y-1', 'active:scale-95');
+                btn.innerText = 'Заказать отзывы';
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.innerText = 'Войдите для заказа';
             }
         }
 
         async function sendOrder() {
+            const user = JSON.parse(localStorage.getItem('rm_user'));
+            if(!user) return alert('Сначала войдите!');
+
             const btn = document.getElementById('btn');
             const target = document.getElementById('target').value;
             const qty = parseInt(document.getElementById('quantity').value);
             
-            // Новая проверка ссылки (должна быть точка)
-            const urlPattern = /^[^\s]+\.[^\s]{2,}$/;
-            if (!urlPattern.test(target)) {
-                alert('Введите корректную ссылку с точкой (например: t.me/канал или site.com)');
+            // Проверка на точку
+            if (!target.includes('.')) {
+                alert('Введите корректную ссылку с точкой (например: t.me/link)');
                 return;
             }
-            if (qty < 5 || isNaN(qty)) { alert('Минимальный заказ — 5 отзывов!'); return; }
+            if (qty < 5) { alert('Минимальный заказ — 5 отзывов!'); return; }
 
             btn.disabled = true; btn.innerText = 'Отправка...';
-            const user = JSON.parse(localStorage.getItem('rm_user'));
 
             const data = {
                 type: 'Telegram Отзывы', 
@@ -116,7 +128,7 @@
                 quantity: qty,
                 link: document.getElementById('link').value, 
                 contact: document.getElementById('contact').value,
-                user_info: user ? `${user.name} (${user.email})` : 'Аноним'
+                user_info: `${user.name} (${user.email})`
             };
 
             try {
@@ -131,7 +143,7 @@
                 alert('Заказ отправлен! Проверьте Telegram.');
                 window.location.href='index.html';
             } finally {
-                btn.disabled = false; btn.innerText = 'Заказать отзывы';
+                btn.disabled = false; renderUser();
             }
         }
         window.onload = renderUser;
