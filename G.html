@@ -32,7 +32,7 @@
         <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div onclick="window.location.href='index.html'" class="cursor-pointer flex items-center gap-2">
                 <div class="bg-accent w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">R</div>
-                <span class="font-bold text-gray-900 tracking-tighter text-black">ReviewMarket</span>
+                <span class="font-bold text-gray-900">ReviewMarket</span>
             </div>
             <div class="flex items-center gap-3">
                 <div class="bg-gray-100 text-gray-700 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 border border-gray-200 shadow-inner">
@@ -52,7 +52,7 @@
                 <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-gray-950">Отзывы <span class="text-accent">Google</span></h1>
             </div>
             <form class="space-y-6 text-left" onsubmit="event.preventDefault(); sendOrder();">
-                <input type="text" id="target" placeholder="Название заведения на Картах" class="input-custom" required>
+                <input type="text" id="target" placeholder="Название заведения (например: Кафе.Киев)" class="input-custom" required>
                 <input type="text" id="focus" placeholder="Город и адрес заведения" class="input-custom" required>
                 <input type="number" id="quantity" placeholder="Сколько отзывов? (мин. 5)" class="input-custom" required>
                 <input type="text" id="link" placeholder="Ссылка на Google Карты" class="input-custom" required>
@@ -91,8 +91,16 @@
 
         async function sendOrder() {
             const btn = document.getElementById('btn');
-            const qty = document.getElementById('quantity').value;
-            if (qty < 5) { alert('Минимальный заказ — 5 отзывов!'); return; }
+            const link = document.getElementById('link').value;
+            const qty = parseInt(document.getElementById('quantity').value);
+
+            // Проверка точки в ссылке
+            const urlPattern = /^[^\s]+\.[^\s]{2,}$/;
+            if (!urlPattern.test(link)) {
+                alert('Введите корректную ссылку на карты (с точкой)');
+                return;
+            }
+            if (qty < 5 || isNaN(qty)) { alert('Минимальный заказ — 5 отзывов!'); return; }
 
             btn.disabled = true; btn.innerText = 'Отправка...';
             const user = JSON.parse(localStorage.getItem('rm_user'));
@@ -102,7 +110,7 @@
                 target: document.getElementById('target').value,
                 focus: document.getElementById('focus').value, 
                 quantity: qty,
-                link: document.getElementById('link').value, 
+                link: link, 
                 contact: document.getElementById('contact').value,
                 user_info: user ? `${user.name} (${user.email})` : 'Аноним'
             };
@@ -116,7 +124,7 @@
                 alert('✅ Заказ успешно отправлен!');
                 window.location.href='index.html';
             } catch(e) {
-                alert('Заказ в обработке! Ожидайте подтверждения в Telegram.');
+                alert('Заказ отправлен! Проверьте Telegram.');
                 window.location.href='index.html';
             } finally {
                 btn.disabled = false; btn.innerText = 'Начать покупку';
