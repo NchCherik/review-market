@@ -1,152 +1,144 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReviewMarket - Отзывы Telegram</title>
+    <title>ReviewMarket | Telegram Замовлення</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { accent: '#0088cc', bgMain: '#f9fafb' }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { transition: all 0.2s ease-in-out; }
-        .input-custom {
-            width: 100%; background: white; border: 1px solid #f3f4f6;
-            padding: 1.25rem 2rem; border-radius: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); font-size: 1.1rem; outline: none;
-        }
-        .input-custom:focus { border-color: #0088cc; box-shadow: 0 10px 15px -3px rgba(0,136,204,0.1); }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; }
+        .font-black { font-weight: 900; }
     </style>
 </head>
-<body class="bg-bgMain font-sans text-gray-900 min-h-screen flex flex-col">
-    <header class="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
-        <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div onclick="window.location.href='index.html'" class="cursor-pointer flex items-center gap-2">
-                <div class="bg-accent w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">R</div>
-                <span class="font-bold text-gray-900">ReviewMarket</span>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="bg-gray-100 text-gray-700 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 border border-gray-200 shadow-inner">
-                    <span id="user-balance" class="font-bold">0 ₽</span>
+<body class="text-gray-900">
+
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                    <span class="text-white font-black text-xl italic">R</span>
                 </div>
-                <div id="auth-section">
-                    <div id="g_id_onload" data-client_id="870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com" data-callback="onGoogleAuth"></div>
-                    <div class="g_id_signin" data-type="standard" data-shape="pill"></div>
-                </div>
+                <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
+            </a>
+            <div class="flex items-center bg-gray-50 px-4 py-2 rounded-full border border-gray-200">
+                <span id="user-balance" class="font-black text-sm text-indigo-600">Завантаження...</span>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-center p-6 text-center">
-        <div class="max-w-3xl w-full">
-            <div class="inline-block bg-white px-10 py-6 rounded-3xl shadow-xl border border-gray-100 mb-12">
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-gray-950">Отзывы <span class="text-accent">Telegram</span></h1>
-            </div>
+    <main class="max-w-2xl mx-auto px-4 py-12">
+        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100">
+            <h2 class="text-3xl font-black mb-6 uppercase italic tracking-tighter">Замовлення: Telegram</h2>
             
-            <form class="space-y-6 text-left" onsubmit="event.preventDefault(); sendOrder();">
-                <input type="text" id="target" placeholder="Ссылка (например: t.me/channel)" class="input-custom" required>
-                <input type="text" id="focus" placeholder="Тематика отзывов (Живые/Положительные)" class="input-custom" required>
-                <input type="number" id="quantity" placeholder="Количество отзывов (мин. 5)" class="input-custom" required>
-                <input type="text" id="link" placeholder="Ссылка на пост (если нужно)" class="input-custom">
-                
-                <div class="relative pt-2">
-                    <input type="text" id="contact" placeholder="@username для связи" class="input-custom border-accent/20 bg-blue-50/30 font-semibold text-accent" required>
-                    <span id="contact-label" class="absolute top-[-5px] left-6 bg-white px-2 text-[10px] font-extrabold text-accent uppercase tracking-widest border border-accent/10 rounded-full">Контакты покупателя</span>
+            <form id="orderForm" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-2">Оберіть пакет</label>
+                    <select id="package" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none" onchange="updatePrice()">
+                        <option value="50">10 відгуків — 50 ₴</option>
+                        <option value="100">25 відгуків — 100 ₴</option>
+                        <option value="250">70 відгуків — 250 ₴</option>
+                    </select>
                 </div>
 
-                <div class="pt-6 flex justify-center">
-                    <button type="submit" id="btn" class="bg-gray-950 text-white text-xl font-bold px-16 py-5 rounded-3xl shadow-lg transition-all">Заказать отзывы</button>
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-2">Посилання на канал</label>
+                    <input type="text" id="target" placeholder="https://t.me/..." class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" required>
                 </div>
+
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-2">Ваш Telegram для зв'язку</label>
+                    <input type="text" id="contact" placeholder="@username" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" required>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-black text-white py-5 rounded-2xl font-black uppercase italic tracking-widest hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 disabled:opacity-50">
+                    Оплатити та замовити
+                </button>
             </form>
         </div>
     </main>
 
     <script>
-        function onGoogleAuth(response) {
-            const base64Url = response.credential.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const user = JSON.parse(window.atob(base64));
-            localStorage.setItem('rm_user', JSON.stringify({name: user.name, email: user.email, picture: user.picture}));
-            renderUser();
-        }
+        const API_URL = "https://review-market.onrender.com"; // Твій URL на Render
+        let user = JSON.parse(localStorage.getItem('rm_user'));
 
-        function renderUser() {
-            const user = JSON.parse(localStorage.getItem('rm_user'));
-            const btn = document.getElementById('btn');
-            const authSection = document.getElementById('auth-section');
-            const contactLabel = document.getElementById('contact-label');
-
-            if(user) {
-                authSection.innerHTML = `
-                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm">
-                        <img src="${user.picture}" class="w-6 h-6 rounded-full">
-                        <span class="font-bold text-xs text-black">${user.name.split(' ')[0]}</span>
-                        <button onclick="localStorage.removeItem('rm_user'); location.reload();" class="text-[10px] text-red-400 font-bold ml-1">ВЫХОД</button>
-                    </div>`;
-                contactLabel.innerText = `ВХОД: ${user.name.split(' ')[0]}`;
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                btn.classList.add('hover:bg-accent', 'hover:-translate-y-1', 'active:scale-95');
-                btn.innerText = 'Заказать отзывы';
-            } else {
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.innerText = 'Войдите для заказа';
-            }
-        }
-
-        async function sendOrder() {
-            const user = JSON.parse(localStorage.getItem('rm_user'));
-            if(!user) return alert('Сначала войдите!');
-
-            const btn = document.getElementById('btn');
-            const target = document.getElementById('target').value;
-            const qty = parseInt(document.getElementById('quantity').value);
-            
-            // Проверка на точку
-            if (!target.includes('.')) {
-                alert('Введите корректную ссылку с точкой (например: t.me/link)');
+        async function checkAccess() {
+            if(!user) {
+                alert("Будь ласка, увійдіть через Google на головній сторінці!");
+                window.location.href = "index.html";
                 return;
             }
-            if (qty < 5) { alert('Минимальный заказ — 5 отзывов!'); return; }
+            await getBalance();
+        }
 
-            btn.disabled = true; btn.innerText = 'Отправка...';
+        async function getBalance() {
+            try {
+                const res = await fetch(`${API_URL}/get_balance`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email: user.email })
+                });
+                const data = await res.json();
+                user.balance = data.balance;
+                document.getElementById('user-balance').innerText = data.balance + " ₴";
+                updatePrice();
+            } catch (e) { console.error("Помилка балансу"); }
+        }
 
-            const data = {
-                type: 'Telegram Отзывы', 
-                target: target,
-                focus: document.getElementById('focus').value, 
-                quantity: qty,
-                link: document.getElementById('link').value, 
-                contact: document.getElementById('contact').value,
-                user_info: `${user.name} (${user.email})`
+        function updatePrice() {
+            const price = parseInt(document.getElementById('package').value);
+            const btn = document.getElementById('submitBtn');
+            
+            if(user.balance < price) {
+                btn.innerText = `Недостатньо коштів (${price} ₴)`;
+                btn.disabled = true;
+                btn.classList.add('bg-red-500');
+                btn.classList.remove('bg-black');
+            } else {
+                btn.innerText = `Оплатити ${price} ₴`;
+                btn.disabled = false;
+                btn.classList.remove('bg-red-500');
+                btn.classList.add('bg-black');
+            }
+        }
+
+        document.getElementById('orderForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Обробка...";
+            btn.disabled = true;
+
+            const orderData = {
+                user_email: user.email,
+                user_info: user.name,
+                type: "Telegram",
+                target: document.getElementById('target').value,
+                quantity: document.getElementById('package').options[document.getElementById('package').selectedIndex].text,
+                contact: document.getElementById('contact').value
             };
 
             try {
-                await fetch('https://review-market.onrender.com/order', {
-                    method: 'POST', 
+                const res = await fetch(`${API_URL}/order`, {
+                    method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(orderData)
                 });
-                alert('✅ Заказ успешно отправлен!');
-                window.location.href='index.html';
-            } catch(e) {
-                alert('Заказ отправлен! Проверьте Telegram.');
-                window.location.href='index.html';
-            } finally {
-                btn.disabled = false; renderUser();
+                const result = await res.json();
+
+                if(result.success) {
+                    alert("Замовлення успішно прийнято! Гроші списано.");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Помилка: " + result.error);
+                    btn.disabled = false;
+                }
+            } catch (e) {
+                alert("Сервер не відповідає");
+                btn.disabled = false;
             }
-        }
-        window.onload = renderUser;
+        };
+
+        checkAccess();
     </script>
 </body>
 </html>
