@@ -1,101 +1,154 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReviewMarket</title>
+    <title>ReviewMarket | Головна</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .card-custom { transition: all 0.3s ease; cursor: pointer; }
-        .card-custom:hover { transform: translateY(-5px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; }
+        .bg-custom { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+        .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .font-black { font-weight: 900; }
     </style>
 </head>
-<body class="bg-[#f9fafb] min-h-screen flex flex-col">
+<body class="text-gray-900">
 
-    <header class="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
-        <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div onclick="window.location.href='index.html'" class="cursor-pointer flex items-center gap-2">
-                <div class="bg-[#0088cc] w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-lg">R</div>
-                <span class="font-black text-gray-950 text-xl tracking-tighter">ReviewMarket</span>
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200">
+                    <span class="text-white font-black text-xl italic">R</span>
+                </div>
+                <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
 
             <div class="flex items-center gap-4">
-                <div class="bg-gray-50 text-gray-700 px-5 py-2 rounded-full font-bold text-sm border border-gray-200 shadow-inner">
-                    <span id="user-balance">0</span> ₽
+                <div class="flex items-center bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+                    <span id="user-balance" class="font-black text-sm mr-2 text-indigo-600">0 ₴</span>
+                    <button onclick="toggleModal(true)" class="w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center hover:bg-indigo-600 transition-all hover:scale-110 active:scale-95 shadow-md shadow-indigo-200">
+                        <span class="text-xs font-bold">+</span>
+                    </button>
                 </div>
-
+                
                 <div id="auth-section">
                     <div id="g_id_onload"
-                         data-client_id="870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com"
+                         data-client_id="ТВОЙ_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
                          data-callback="onGoogleAuth">
                     </div>
-                    <div class="g_id_signin" data-type="standard" data-shape="pill"></div>
+                    <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="signin_with" data-size="medium" data-logo_alignment="left"></div>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-center p-6">
-        
-        <div class="bg-white px-12 py-7 rounded-[2.5rem] shadow-xl shadow-gray-100/50 mb-16 border border-gray-50">
-            <h1 class="text-5xl md:text-6xl font-black tracking-tight text-gray-900">
-                <span class="text-indigo-600">Отзывы.</span> Навсегда.
-            </h1>
+    <main class="max-w-5xl mx-auto px-4 py-16">
+        <div class="text-center mb-16">
+            <div class="inline-block bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">№1 в Україні</div>
+            <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none uppercase italic">
+                Керуй своєю <br><span class="text-indigo-600">репутацією</span>
+            </h2>
+            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto mb-8">
+                Професійне просування на картах та у месенджерах. Безпечно. Швидко. З гарантією результату.
+            </p>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-8 w-full max-w-4xl">
-            
-            <div onclick="window.location.href='tg.html'" class="card-custom flex-1 bg-white p-14 rounded-[2.5rem] shadow-lg shadow-gray-200/50 flex flex-col items-center justify-center border border-gray-50">
-                <div class="w-16 h-16 bg-sky-50 rounded-full flex items-center justify-center mb-6">
-                    <svg class="w-8 h-8 text-sky-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.891 8.146l-1.897 8.942c-.143.64-.521.797-1.058.496l-2.887-2.128-1.392 1.339c-.155.155-.283.283-.58.283l.206-2.934 5.339-4.825c.232-.206-.051-.32-.36-.114l-6.598 4.155-2.844-.889c-.618-.192-.63-.618.129-.914l11.107-4.281c.514-.192.964.114.775.866z"/></svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
+                <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-8 group-hover:rotate-6 transition-transform">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.58-3.27 3.61-1.51 4.35-1.77 4.84-1.78.11 0 .35.03.5.16.12.1.16.23.18.33.02.07.03.2.02.28z"/></svg>
                 </div>
-                <span class="text-xl font-black text-gray-900">Отзывы Телеграмм</span>
+                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Telegram канали</h3>
+                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Живі відгуки, реакції та охоплення. Виведемо ваш канал у топ пошуку Telegram.</p>
+                <a href="tg.html" class="inline-block bg-black text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-gray-800 transition-all uppercase italic tracking-widest shadow-lg shadow-gray-200">Обрати пакет</a>
             </div>
 
-            <div onclick="window.location.href='G.html'" class="card-custom flex-1 bg-white p-14 rounded-[2.5rem] shadow-lg shadow-gray-200/50 flex flex-col items-center justify-center border border-gray-50">
-                <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-6">
-                    <span class="text-red-500 text-3xl font-black">G</span>
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
+                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8 group-hover:-rotate-6 transition-transform">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
-                <span class="text-xl font-black text-gray-900">Отзывы Гугл</span>
+                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
+                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг вашого бізнесу за лічені дні.</p>
+                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest shadow-lg shadow-indigo-100">Купити відгуки</a>
             </div>
-
         </div>
     </main>
 
+    <div id="rechargeModal" class="modal flex items-center justify-center">
+        <div class="bg-white p-10 rounded-[40px] max-w-sm w-full mx-4 shadow-2xl text-center border border-gray-100">
+            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="text-2xl font-black">₴</span>
+            </div>
+            <h4 class="text-2xl font-black mb-4 uppercase italic">Поповнення</h4>
+            <p class="text-gray-500 text-sm mb-8 leading-relaxed">
+                Наразі автоматичне поповнення через сайт недоступне. Напишіть нашому адміністратору, щоб поповнити баланс вручную:
+            </p>
+            <a href="https://t.me/ТВОЙ_ТГ_НИК" target="_blank" class="block w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 mb-6 transition-all shadow-lg shadow-indigo-100 uppercase italic tracking-widest">
+                Написати адміну
+            </a>
+            <button onclick="toggleModal(false)" class="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] hover:text-black transition-colors">Закрити вікно</button>
+        </div>
+    </div>
+
     <script>
-        function onGoogleAuth(response) {
-            const base64Url = response.credential.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const user = JSON.parse(window.atob(base64));
+        const API_URL = "https://review-market.onrender.com"; // ЗАМІНИ НА СВІЙ URL НА RENDER
 
-            localStorage.setItem('rm_user', JSON.stringify({
-                name: user.name,
-                picture: user.picture,
-                email: user.email
-            }));
-            
-            fetch('https://review-market.onrender.com/auth-google', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email: user.email, name: user.name })
-            });
-
-            renderUser();
+        function toggleModal(show) {
+            document.getElementById('rechargeModal').style.display = show ? 'flex' : 'none';
         }
 
-        function renderUser() {
+        async function onGoogleAuth(response) {
+            try {
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const user = JSON.parse(window.atob(base64));
+                
+                localStorage.setItem('rm_user', JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    picture: user.picture
+                }));
+
+                await fetchBalance(user.email, user.name);
+                location.reload();
+            } catch (e) {
+                console.error("Помилка авторизації:", e);
+                alert("Помилка входу. Спробуйте ще раз.");
+            }
+        }
+
+        async function fetchBalance(email, name) {
+            try {
+                const res = await fetch(`${API_URL}/get_balance`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email: email, name: name })
+                });
+                const data = await res.json();
+                return data.balance;
+            } catch (e) {
+                console.error("Сервер недоступний");
+                return 0;
+            }
+        }
+
+        async function renderUser() {
             const user = JSON.parse(localStorage.getItem('rm_user'));
+            const balanceElement = document.getElementById('user-balance');
+            const authSection = document.getElementById('auth-section');
+
             if(user) {
-                document.getElementById('auth-section').innerHTML = `
-                    <div class="flex items-center gap-3 bg-white border border-gray-200 px-4 py-2 rounded-full shadow-sm hover:bg-gray-50 transition-colors">
-                        <img src="${user.picture}" class="w-6 h-6 rounded-full border border-gray-100">
-                        <span class="font-bold text-sm text-gray-800">${user.name.split(' ')[0]}</span>
-                        <button onclick="logout()" class="text-[10px] text-red-500 font-black uppercase tracking-tighter ml-1">Выход</button>
-                    </div>
-                `;
+                const currentBalance = await fetchBalance(user.email, user.name);
+                balanceElement.innerText = currentBalance + " ₴";
+
+                authSection.innerHTML = `
+                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
+                        <img src="${user.picture}" class="w-6 h-6 rounded-full shadow-sm">
+                        <span class="font-black text-[10px] text-black uppercase italic">${user.name.split(' ')[0]}</span>
+                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 hover:text-red-600 transition-colors uppercase">Вихід</button>
+                    </div>`;
             }
         }
 
