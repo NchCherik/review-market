@@ -12,15 +12,28 @@
         .bg-custom { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
         .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
+        /* Стиль для секретного окна админа */
+        #adminModal { z-index: 100; }
     </style>
 </head>
 <body class="text-gray-900">
 
+    <div id="adminModal" class="modal items-center justify-center">
+        <div class="bg-gray-900 text-white p-8 rounded-[40px] max-w-xs w-full shadow-2xl border border-gray-700">
+            <h3 class="text-xl font-black mb-4 uppercase italic text-indigo-400 tracking-tighter">Admin Control</h3>
+            <input type="password" id="admPass" placeholder="Пароль" class="w-full bg-gray-800 p-4 rounded-2xl mb-3 text-sm border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="number" id="admAmount" placeholder="Сума ₴" class="w-full bg-gray-800 p-4 rounded-2xl mb-4 text-sm border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button onclick="executeTopUp()" class="w-full bg-indigo-600 py-4 rounded-2xl font-black uppercase text-xs hover:bg-indigo-500 transition-all">Нарахувати ₴</button>
+            <button onclick="document.getElementById('adminModal').style.display='none'" class="w-full text-gray-500 text-[10px] mt-6 uppercase font-black tracking-widest hover:text-white transition-colors text-center">Закрити</button>
+        </div>
+    </div>
+
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200">
+            <div class="flex items-center gap-2 relative">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200 relative cursor-default">
                     <span class="text-white font-black text-xl italic">R</span>
+                    <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0"></div>
                 </div>
                 <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
@@ -83,7 +96,7 @@
             </div>
             <h4 class="text-2xl font-black mb-4 uppercase italic">Поповнення</h4>
             <p class="text-gray-500 text-sm mb-8 leading-relaxed">
-                Наразі автоматичне поповнення через сайт недоступне. Напишіть нашому адміністратору, щоб поповнити баланс вручную:
+                Наразі автоматичне поповнення через сайт недоступне. Напишіть нашому адміністратору, щоб поповнити баланс вручну:
             </p>
             <a href="https://t.me/ТВОЙ_ТГ_НИК" target="_blank" class="block w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 mb-6 transition-all shadow-lg shadow-indigo-100 uppercase italic tracking-widest">
                 Написати адміну
@@ -93,10 +106,33 @@
     </div>
 
     <script>
-        const API_URL = "https://review-market.onrender.com"; // ЗАМІНИ НА СВІЙ URL НА RENDER
+        const API_URL = "https://review-market.onrender.com";
 
         function toggleModal(show) {
             document.getElementById('rechargeModal').style.display = show ? 'flex' : 'none';
+        }
+
+        // НОВА ФУНКЦІЯ ДЛЯ СЕКРЕТНОЇ АДМІНКИ
+        async function executeTopUp() {
+            const user = JSON.parse(localStorage.getItem('rm_user'));
+            const pass = document.getElementById('admPass').value;
+            const amount = document.getElementById('admAmount').value;
+
+            if(!user) return alert("Спочатку увійдіть через Google!");
+
+            const res = await fetch(`${API_URL}/admin/topup`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ password: pass, amount: amount, email: user.email })
+            });
+
+            const data = await res.json();
+            if(data.success) {
+                alert("Баланс успішно нараховано!");
+                location.reload();
+            } else {
+                alert("Помилка: " + data.error);
+            }
         }
 
         async function onGoogleAuth(response) {
@@ -115,7 +151,7 @@
                 location.reload();
             } catch (e) {
                 console.error("Помилка авторизації:", e);
-                alert("Помилка входу. Спробуйте ще раз.");
+                alert("Помилка входу.");
             }
         }
 
@@ -129,7 +165,6 @@
                 const data = await res.json();
                 return data.balance;
             } catch (e) {
-                console.error("Сервер недоступний");
                 return 0;
             }
         }
