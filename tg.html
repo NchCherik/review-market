@@ -15,16 +15,6 @@
         }
         .font-black { font-weight: 900; }
         
-        /* Анимация для инпутов */
-        .input-focus {
-            transition: all 0.3s ease;
-        }
-        .input-focus:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.2);
-        }
-
-        /* Стиль ползунка (слайдера) */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
@@ -53,7 +43,7 @@
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-blue-200">
+                <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                     <span class="text-white font-black text-xl italic">R</span>
                 </div>
                 <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
@@ -66,90 +56,62 @@
     </header>
 
     <main class="max-w-2xl mx-auto px-4 py-12">
-        
         <div class="text-center mb-10">
             <h2 class="text-5xl font-black mb-2 uppercase italic tracking-tighter text-blue-600">
                 Telegram <span class="text-black">Boost</span>
             </h2>
-            <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">Швидкі коментарі чи відгуки в телеграмм</p>
+            <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">Ціна за 1 підписника: 32.5 ₴</p>
         </div>
 
         <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-xl mb-8">
-            <div class="text-center mb-8">
-                <span class="bg-blue-50 text-blue-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Калькулятор замовлення</span>
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Відгуки</label>
-                    <input type="number" id="count-input" value="500" oninput="updateByCount()" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-black text-2xl text-blue-600">
-                </div>
-
-                <div class="hidden md:flex justify-center pt-6">
-                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                    </div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Підписники</label>
+                    <input type="number" id="count-input" value="10" oninput="updateByCount()" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-blue-500/10 outline-none font-black text-2xl text-blue-600">
                 </div>
 
                 <div class="space-y-3">
                     <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Сума (₴)</label>
-                    <input type="number" id="price-input" value="100" oninput="updateByPrice()" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-black text-2xl">
+                    <input type="number" id="price-input" value="325" oninput="updateByPrice()" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-blue-500/10 outline-none font-black text-2xl">
                 </div>
             </div>
 
             <div class="mt-8">
-                <input type="range" id="range-slider" min="100" max="10000" step="100" value="500" oninput="updateBySlider()" class="cursor-pointer">
-                <div class="flex justify-between mt-2 text-[10px] font-black text-gray-300 uppercase italic tracking-widest">
-                    <span>10 відгуків</span>
-                    <span>100 відгуків.</span>
-                </div>
+                <input type="range" id="range-slider" min="1" max="1000" step="1" value="10" oninput="updateBySlider()" class="cursor-pointer">
             </div>
         </div>
 
         <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm space-y-6">
-            <div>
-                <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-4">Посилання на канал</label>
-                <input type="text" id="target-link" placeholder="https://t.me/your_channel" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-2 focus:ring-blue-500 outline-none font-semibold">
-            </div>
-
-            <div>
-                <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-4">Ваш контакт (@username)</label>
-                <input type="text" id="user-contact" placeholder="@pasha_vinnitsa" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-2 focus:ring-blue-500 outline-none font-semibold">
-            </div>
-
-            <button onclick="submitOrder()" class="w-full bg-blue-600 text-white py-6 rounded-3xl font-black uppercase italic tracking-[0.2em] text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 active:scale-95 transform">
+            <input type="text" id="target-link" placeholder="Посилання на канал" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-2 focus:ring-blue-500 outline-none font-semibold">
+            <input type="text" id="user-contact" placeholder="Ваш Telegram @username" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-2 focus:ring-blue-500 outline-none font-semibold">
+            <button onclick="submitOrder()" class="w-full bg-blue-600 text-white py-6 rounded-3xl font-black uppercase italic tracking-[0.2em] text-sm hover:bg-blue-700 transition-all">
                 Оформити замовлення
             </button>
         </div>
-
     </main>
 
     <script>
         const API_URL = "https://review-market.onrender.com";
-        const RATE = 0.2; // 1 підписник = 0.2 грн (тобто 500 підп. = 100 грн)
+        const RATE = 32.5; // Твоя новая цена
 
-        // Элементы
         const countInput = document.getElementById('count-input');
         const priceInput = document.getElementById('price-input');
         const rangeSlider = document.getElementById('range-slider');
 
-        // 1. Вводим количество -> считаем цену
         function updateByCount() {
             const count = parseInt(countInput.value) || 0;
-            const price = Math.round(count * RATE);
+            const price = count * RATE;
             priceInput.value = price;
             rangeSlider.value = count;
         }
 
-        // 2. Вводим цену -> считаем количество
         function updateByPrice() {
-            const price = parseInt(priceInput.value) || 0;
-            const count = Math.round(price / RATE);
+            const price = parseFloat(priceInput.value) || 0;
+            const count = Math.floor(price / RATE);
             countInput.value = count;
             rangeSlider.value = count;
         }
 
-        // 3. Двигаем слайдер
         function updateBySlider() {
             countInput.value = rangeSlider.value;
             updateByCount();
@@ -157,41 +119,34 @@
 
         async function submitOrder() {
             const userData = JSON.parse(localStorage.getItem('rm_user'));
-            if(!userData) return alert("Спочатку увійдіть на головній!");
+            if(!userData) return alert("Увійдіть!");
 
             const payload = {
                 user_email: userData.email,
-                price: parseInt(priceInput.value),
+                price: parseFloat(priceInput.value),
                 package: countInput.value + " підписників",
                 type: "Telegram Boost",
                 target: document.getElementById('target-link').value,
                 contact: document.getElementById('user-contact').value,
-                details: "Замовлення через калькулятор"
+                details: "Ціна 32.5/од"
             };
 
-            if(!payload.target || !payload.contact || payload.price <= 0) {
-                return alert("Будь ласка, заповніть всі поля!");
-            }
+            if(!payload.target || !payload.contact) return alert("Заповніть поля!");
 
-            try {
-                const res = await fetch(`${API_URL}/order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await res.json();
-                if(result.success) {
-                    alert("Успішно! Замовлення надіслано.");
-                    window.location.href = "index.html";
-                } else {
-                    alert("Помилка: " + result.error);
-                }
-            } catch (err) {
-                alert("Сервер не відповідає.");
+            const res = await fetch(`${API_URL}/order`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            if(result.success) {
+                alert("Успішно!");
+                window.location.href = "index.html";
+            } else {
+                alert(result.error);
             }
         }
 
-        // Баланс при загрузке
         window.onload = async () => {
             const user = JSON.parse(localStorage.getItem('rm_user'));
             if(user) {
