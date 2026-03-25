@@ -4,57 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReviewMarket | Головна</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
-        
-        /* Стили для админ-панели (скрыта) */
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .marquee-container {
-            display: flex;
-            overflow: hidden;
-            user-select: none;
-            gap: 20px;
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        }
-
-        .marquee-content {
-            display: flex;
-            gap: 20px;
-            animation: marquee 30s linear infinite;
-            padding: 20px 0;
-        }
-
-        .marquee-container:hover .marquee-content {
-            animation-play-state: paused;
-        }
-
-        .rev-card {
-            background: white;
-            padding: 24px;
-            border-radius: 40px;
-            border: 1px solid #f1f5f9;
-            width: 280px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            transition: transform 0.3s ease;
-        }
         
-        .rev-card:hover { transform: translateY(-5px); border-color: #e2e8f0; }
+        /* Стиль для бокових відгуків */
+        .review-side {
+            filter: grayscale(100%);
+            opacity: 0.4;
+            transform: scale(0.9);
+            transition: all 0.4s ease;
+        }
+        .review-side:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(0.95);
+        }
 
         @keyframes pulse-indigo {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(99, 102, 241, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
         }
@@ -63,22 +35,12 @@
 </head>
 <body class="text-gray-900">
 
-    <div id="adminModal" class="modal items-center justify-center">
-        <div class="bg-gray-900 text-white p-8 rounded-[40px] max-w-xs w-full shadow-2xl border border-gray-700">
-            <h3 class="text-xl font-black mb-4 uppercase italic text-indigo-400 tracking-tighter">Admin Control</h3>
-            <input type="password" id="admPass" placeholder="Пароль" class="w-full bg-gray-800 p-4 rounded-2xl mb-3 text-sm border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <input type="number" id="admAmount" placeholder="Сума ₴" class="w-full bg-gray-800 p-4 rounded-2xl mb-4 text-sm border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <button onclick="executeTopUp()" class="w-full bg-indigo-600 py-4 rounded-2xl font-black uppercase text-xs hover:bg-indigo-500 transition-all">Нарахувати ₴</button>
-            <button onclick="document.getElementById('adminModal').style.display='none'" class="w-full text-gray-500 text-[10px] mt-6 uppercase font-black tracking-widest hover:text-white transition-colors text-center">Закрити</button>
-        </div>
-    </div>
-
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2 relative">
-                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200 relative">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer">
                     <span class="text-white font-black text-xl italic">R</span>
-                    <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0 cursor-pointer"></div>
+                    <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0"></div>
                 </div>
                 <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
@@ -86,15 +48,16 @@
             <div class="flex items-center gap-4">
                 <div class="flex items-center bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
                     <span id="user-balance" class="font-black text-sm mr-2 text-indigo-600">0 ₴</span>
-                    <div class="w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-md shadow-indigo-200">
+                    <button onclick="toggleModal(true)" class="w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-md">
                         <span class="text-xs font-bold">+</span>
-                    </div>
+                    </button>
                 </div>
                 
                 <div id="auth-section">
                     <div id="g_id_onload"
                          data-client_id="870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com"
-                         data-callback="onGoogleAuth">
+                         data-callback="onGoogleAuth"
+                         data-auto_prompt="false"> 
                     </div>
                     <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-size="medium"></div>
                 </div>
@@ -102,108 +65,52 @@
         </div>
     </header>
 
-    <main class="py-12">
-        <div class="text-center mb-12 max-w-5xl mx-auto px-4">
-            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-6 py-2 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all mb-8 group">
+    <main class="max-w-7xl mx-auto px-4 py-16">
+        <div class="text-center mb-16">
+            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-6 py-2 rounded-full shadow-sm hover:scale-105 transition-all mb-8 group">
                 <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-hover:text-indigo-600">Переваги</span>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600">Переваги</span>
             </a>
-            
             <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none uppercase italic">
                 Керуй своєю <br><span class="text-indigo-600">репутацією</span>
             </h2>
-            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto italic">
-                Професійне просування на картах. Безпечно. Швидко. З гарантією результату.
-            </p>
         </div>
 
-        <div class="marquee-container mb-12">
-            <div class="marquee-content" id="top-marquee"></div>
-        </div>
-
-        <div class="max-w-5xl mx-auto px-4 flex justify-center mb-12">
-            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-2xl max-w-md w-full text-center relative z-10 hover:scale-[1.02] transition-transform">
-                <div class="w-20 h-20 bg-green-50 text-green-500 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-inner">
-                    <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="flex items-center justify-center gap-4 overflow-visible">
+            
+            <div class="review-side hidden lg:block bg-white p-6 rounded-[30px] border border-gray-100 shadow-sm w-64 flex-shrink-0">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-[10px] font-black">А</div>
+                    <span class="font-black text-[10px] uppercase">Андрій К.</span>
                 </div>
-                <h3 class="text-4xl font-black mb-4 italic uppercase tracking-tighter">Google Карти</h3>
-                <p class="text-gray-500 text-sm mb-10 leading-relaxed font-medium italic">Відгуки 5★ з повною гарантією від видалення.</p>
-                <a href="G.html" class="inline-block bg-indigo-600 text-white px-10 py-5 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full shadow-xl shadow-indigo-100">Купити відгуки</a>
+                <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                <p class="text-[10px] text-gray-400 font-medium leading-relaxed">Все супер! Відгуки пройшли модерацію, рейтинг піднявся за два дні.</p>
             </div>
-        </div>
 
-        <div class="marquee-container">
-            <div class="marquee-content" id="bottom-marquee" style="animation-direction: reverse;"></div>
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-xl group relative overflow-hidden max-w-md w-full z-10 scale-105">
+                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8 group-hover:-rotate-6 transition-transform">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
+                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг за лічені дні.</p>
+                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full text-center">Купити відгуки</a>
+            </div>
+
+            <div class="review-side hidden lg:block bg-white p-6 rounded-[30px] border border-gray-100 shadow-sm w-64 flex-shrink-0">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-[10px] font-black">М</div>
+                    <span class="font-black text-[10px] uppercase">Марія П.</span>
+                </div>
+                <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                <p class="text-[10px] text-gray-400 font-medium leading-relaxed">Дуже задоволена сервісом. Команда професіоналів, допомогли з текстами.</p>
+            </div>
+
         </div>
     </main>
 
     <script>
         const API_URL = "https://review-market.onrender.com";
-
-        const reviews = [
-            { name: "Андрій", color: "bg-blue-100 text-blue-600", letter: "A" },
-            { name: "Максим", color: "bg-green-100 text-green-600", letter: "M" },
-            { name: "Олена", color: "bg-purple-100 text-purple-600", letter: "O" },
-            { name: "Дмитро", color: "bg-orange-100 text-orange-600", letter: "D" },
-            { name: "Сергій", color: "bg-red-100 text-red-600", letter: "S" },
-            { name: "Яна", color: "bg-pink-100 text-pink-600", letter: "Y" }
-        ];
-
-        function createReviewCard(rev) {
-            return `
-                <div class="rev-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 ${rev.color} rounded-2xl flex items-center justify-center font-black text-sm shadow-sm">${rev.letter}</div>
-                        <div>
-                            <p class="text-[12px] font-black uppercase italic tracking-tighter">${rev.name}</p>
-                            <p class="text-[9px] text-indigo-500 font-bold uppercase">Клієнт • 5★</p>
-                        </div>
-                    </div>
-                    <p class="text-[12px] text-gray-500 leading-relaxed font-medium italic">"Все круто! Замовив послуги, результат отримав дуже швидко."</p>
-                </div>`;
-        }
-
-        const topM = document.getElementById('top-marquee');
-        const bottomM = document.getElementById('bottom-marquee');
-        const content = reviews.map(r => createReviewCard(r)).join('');
-        topM.innerHTML = content + content;
-        bottomM.innerHTML = content + content;
-
-        async function executeTopUp() {
-            const user = JSON.parse(localStorage.getItem('rm_user'));
-            const pass = document.getElementById('admPass').value;
-            const amount = document.getElementById('admAmount').value;
-            if(!user) return alert("Увійдіть через Google!");
-            const res = await fetch(`${API_URL}/admin/topup`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ password: pass, amount: amount, email: user.email })
-            });
-            const data = await res.json();
-            if(data.success) { alert("Успішно!"); location.reload(); }
-            else { alert("Помилка!"); }
-        }
-
-        async function onGoogleAuth(response) {
-            const base64Url = response.credential.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const user = JSON.parse(window.atob(base64));
-            localStorage.setItem('rm_user', JSON.stringify({ name: user.name, email: user.email, picture: user.picture }));
-            location.reload();
-        }
-
-        async function fetchBalance(email, name) {
-            try {
-                const res = await fetch(`${API_URL}/get_balance`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email: email, name: name })
-                });
-                const data = await res.json();
-                return data.balance;
-            } catch (e) { return 0; }
-        }
-
+        // ... (всі твої функції fetchBalance, onGoogleAuth, renderUser) ...
         async function renderUser() {
             const user = JSON.parse(localStorage.getItem('rm_user'));
             if(user) {
@@ -212,12 +119,11 @@
                 document.getElementById('auth-section').innerHTML = `
                     <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
                         <img src="${user.picture}" class="w-6 h-6 rounded-full">
-                        <span class="font-black text-[10px] uppercase italic tracking-tighter">${user.name.split(' ')[0]}</span>
-                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 uppercase hover:text-red-600">Вихід</button>
+                        <span class="font-black text-[10px] uppercase italic text-black">${user.name.split(' ')[0]}</span>
+                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 uppercase">Вихід</button>
                     </div>`;
             }
         }
-
         function logout() { localStorage.removeItem('rm_user'); location.reload(); }
         window.onload = renderUser;
     </script>
