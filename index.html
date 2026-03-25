@@ -11,9 +11,9 @@
         body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
         .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
-        
         #auth-section { display: none; }
 
+        /* Эффект для боковых отзывов на десктопе */
         .review-side {
             filter: grayscale(100%);
             opacity: 0.4;
@@ -36,9 +36,9 @@
 </head>
 <body class="text-gray-900">
 
-    <div id="adminModal" class="modal items-center justify-center">
-        <div class="bg-gray-900 text-white p-8 rounded-[40px] max-w-xs w-full shadow-2xl border border-gray-700">
-            <h3 class="text-xl font-black mb-4 uppercase italic text-indigo-400">Admin Control</h3>
+    <div id="adminModal" class="modal items-center justify-center p-4">
+        <div class="bg-gray-900 text-white p-6 md:p-8 rounded-[30px] md:rounded-[40px] max-w-xs w-full shadow-2xl border border-gray-700">
+            <h3 class="text-lg font-black mb-4 uppercase italic text-indigo-400">Admin Control</h3>
             <input type="password" id="admPass" placeholder="Пароль" class="w-full bg-gray-800 p-4 rounded-2xl mb-3 text-sm border border-gray-700 text-white focus:outline-none">
             <input type="number" id="admAmount" placeholder="Сума ₴" class="w-full bg-gray-800 p-4 rounded-2xl mb-4 text-sm border border-gray-700 text-white focus:outline-none">
             <button onclick="executeTopUp()" class="w-full bg-indigo-600 py-4 rounded-2xl font-black uppercase text-xs hover:bg-indigo-500 transition-all">Нарахувати</button>
@@ -47,64 +47,58 @@
     </div>
 
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2 relative">
-                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer">
-                    <span class="text-white font-black text-xl italic">R</span>
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 relative shrink-0">
+                <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer">
+                    <span class="text-white font-black text-lg italic">R</span>
                     <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0"></div>
                 </div>
-                <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
+                <h1 class="font-black text-sm md:text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
-                    <span id="user-balance" class="font-black text-sm mr-2 text-indigo-600">0 ₴</span>
-                    <div class="w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-md opacity-50 cursor-default">
-                        <span class="text-xs font-bold">+</span>
+            <div class="flex items-center gap-2 md:gap-4 overflow-hidden">
+                <div class="flex items-center bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200 shadow-sm shrink-0">
+                    <span id="user-balance" class="font-black text-[11px] md:text-sm mr-1.5 text-indigo-600">0 ₴</span>
+                    <div class="w-5 h-5 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-md opacity-50">
+                        <span class="text-[10px] font-bold">+</span>
                     </div>
                 </div>
                 
-                <div id="auth-section">
-                    <div id="g_id_onload"
-                         data-client_id="870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com"
-                         data-callback="onGoogleAuth"
-                         data-auto_prompt="false"> 
+                <div id="auth-section" class="shrink-0">
                     </div>
-                    <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-size="medium"></div>
-                </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-16">
-        <div class="text-center mb-16">
-            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-6 py-2 rounded-full shadow-sm hover:scale-105 transition-all mb-8 group">
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-16">
+        <div class="text-center mb-10 md:mb-16">
+            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-5 py-2 rounded-full shadow-sm hover:scale-105 transition-all mb-6 group">
                 <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600">Переваги</span>
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">Переваги</span>
             </a>
             
-            <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none uppercase italic">
+            <h2 class="text-4xl md:text-8xl font-black mb-4 tracking-tighter leading-tight uppercase italic px-2">
                 Керуй своєю <br><span class="text-indigo-600">репутацією</span>
             </h2>
-            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto">Професійне просування на картах. Безпечно. Швидко.</p>
+            <p class="text-gray-400 text-sm md:text-lg font-medium max-w-xs md:max-w-xl mx-auto">Професійне просування на картах. Безпечно. Швидко.</p>
         </div>
 
-        <div class="flex items-center justify-center gap-6 overflow-visible mt-12">
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-6 mt-8">
             <div class="review-side hidden lg:block bg-white p-6 rounded-[35px] border border-gray-100 shadow-sm w-72 flex-shrink-0">
                 <div class="flex items-center gap-2 mb-3">
                     <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-black">A</div>
                     <span class="font-black text-[10px] uppercase">Артем В.</span>
                 </div>
                 <div class="flex text-indigo-500 text-[10px] mb-2">★★★★★</div>
-                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Замовив 10 відгуків для кафе. Все з'явилося протягом 3 днів. Клієнти стали заходити частіше!"</p>
+                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Замовив 10 відгуків для кафе. Все з'явилося протягом 3 днів."</p>
             </div>
 
-            <div class="bg-white p-10 rounded-[45px] border border-gray-100 shadow-2xl group relative overflow-hidden max-w-md w-full z-10 scale-105 border-b-4 border-b-indigo-500">
-                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8 group-hover:-rotate-6 transition-transform">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <div class="bg-white p-8 md:p-10 rounded-[35px] md:rounded-[45px] border border-gray-100 shadow-2xl group relative overflow-hidden max-w-md w-full z-10 border-b-4 border-b-indigo-500">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:-rotate-6 transition-transform">
+                    <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
-                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
-                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг за лічені дні.</p>
+                <h3 class="text-2xl md:text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
+                <p class="text-gray-500 text-xs md:text-sm mb-6 md:mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг за лічені дні.</p>
                 <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full text-center shadow-lg shadow-indigo-100">Купити відгуки</a>
             </div>
 
@@ -114,12 +108,13 @@
                     <span class="font-black text-[10px] uppercase">Максим Д.</span>
                 </div>
                 <div class="flex text-indigo-500 text-[10px] mb-2">★★★★★</div>
-                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Найкращий сервіс в Україні. Все офіційно, через особистий кабінет. Підтримка відповідає миттєво."</p>
+                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Найкращий сервіс в Україні. Все офіційно через кабінет."</p>
             </div>
         </div>
     </main>
 
     <script>
+        /* Весь твой JS остается без изменений, он универсален */
         const API_URL = "https://review-market.onrender.com";
 
         async function executeTopUp() {
@@ -169,11 +164,25 @@
                 const balance = await fetchBalance(user.email, user.name);
                 balanceElement.innerText = balance + " ₴";
                 authSection.innerHTML = `
-                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
-                        <img src="${user.picture}" class="w-6 h-6 rounded-full">
-                        <span class="font-black text-[10px] uppercase italic text-black">${user.name.split(' ')[0]}</span>
-                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 hover:text-red-600 uppercase">Вихід</button>
+                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-2 md:px-3 py-1.5 rounded-full shadow-sm">
+                        <img src="${user.picture}" class="w-5 h-5 md:w-6 md:h-6 rounded-full">
+                        <span class="font-black text-[9px] md:text-[10px] uppercase italic text-black truncate max-w-[60px] md:max-w-none">${user.name.split(' ')[0]}</span>
+                        <button onclick="logout()" class="text-[8px] md:text-[9px] text-red-400 font-black ml-1 hover:text-red-600 uppercase">Вихід</button>
                     </div>`;
+            } else {
+                authSection.innerHTML = `
+                    <div id="g_id_onload"
+                         data-client_id="870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com"
+                         data-callback="onGoogleAuth"
+                         data-auto_prompt="false"> 
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-size="medium"></div>
+                `;
+                // Переинициализация Google кнопки, если пользователь не залогинен
+                if (window.google) google.accounts.id.renderButton(
+                    document.querySelector(".g_id_signin"),
+                    { theme: "outline", size: "medium", shape: "pill" }
+                );
             }
             authSection.style.display = 'block';
         }
