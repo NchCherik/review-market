@@ -8,12 +8,17 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
-        #auth-section { display: none; }
+        
+        /* Фикс для кнопки Google на мобилках */
+        #auth-section iframe {
+            max-width: 100% !important;
+            transform: scale(0.9);
+            transform-origin: right;
+        }
 
-        /* Эффект для боковых отзывов на десктопе */
         .review-side {
             filter: grayscale(100%);
             opacity: 0.4;
@@ -48,23 +53,23 @@
 
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-1.5 relative shrink-0">
-                <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer group">
+            <div class="flex items-center gap-1.5 shrink-0">
+                <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer">
                     <span class="text-white font-black text-lg italic">R</span>
                     <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0"></div>
                 </div>
                 <h1 class="font-black text-sm md:text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
 
-            <div class="flex items-center gap-2 md:gap-4 overflow-hidden">
-                <div class="flex items-center bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200 shadow-sm shrink-0">
-                    <span id="user-balance" class="font-black text-[11px] md:text-sm mr-1.5 text-indigo-600">0 ₴</span>
-                    <div class="w-5 h-5 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-md opacity-50">
-                        <span class="text-[10px] font-bold">+</span>
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="flex items-center bg-gray-50 px-2.5 py-1.5 rounded-full border border-gray-200 shadow-sm shrink-0">
+                    <span id="user-balance" class="font-black text-[10px] md:text-sm mr-1 text-indigo-600">0 ₴</span>
+                    <div class="w-4 h-4 md:w-5 md:h-5 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-md opacity-50">
+                        <span class="text-[9px] font-bold">+</span>
                     </div>
                 </div>
                 
-                <div id="auth-section" class="shrink-0 min-w-[100px] flex justify-end">
+                <div id="auth-section" class="flex items-center justify-end min-w-[120px]">
                     </div>
             </div>
         </div>
@@ -76,11 +81,7 @@
                 <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">Переваги</span>
             </a>
-            
-            <h2 class="text-4xl md:text-8xl font-black mb-4 tracking-tighter leading-tight uppercase italic px-2">
-                Керуй своєю <br><span class="text-indigo-600">репутацією</span>
-            </h2>
-            <p class="text-gray-400 text-sm md:text-lg font-medium max-w-xs md:max-w-xl mx-auto">Професійне просування на картах. Безпечно. Швидко.</p>
+            <h2 class="text-4xl md:text-8xl font-black mb-4 tracking-tighter leading-tight uppercase italic">Керуй своєю <br><span class="text-indigo-600">репутацією</span></h2>
         </div>
 
         <div class="flex flex-col lg:flex-row items-center justify-center gap-6 mt-8">
@@ -89,26 +90,15 @@
                     <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-black">A</div>
                     <span class="font-black text-[10px] uppercase">Артем В.</span>
                 </div>
-                <div class="flex text-indigo-500 text-[10px] mb-2">★★★★★</div>
-                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Замовив 10 відгуків для кафе. Все з'явилося протягом 3 днів."</p>
+                <p class="text-[11px] text-gray-500 italic">"Замовив 10 відгуків. Все ок."</p>
             </div>
 
-            <div class="bg-white p-8 md:p-10 rounded-[35px] md:rounded-[45px] border border-gray-100 shadow-2xl group relative overflow-hidden max-w-md w-full z-10 border-b-4 border-b-indigo-500 transition-transform hover:-translate-y-1">
-                <div class="w-14 h-14 md:w-16 md:h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:-rotate-6 transition-transform">
-                    <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <div class="bg-white p-8 md:p-10 rounded-[35px] md:rounded-[45px] border border-gray-100 shadow-2xl group max-w-md w-full border-b-4 border-b-indigo-500">
+                <div class="w-14 h-14 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
-                <h3 class="text-2xl md:text-3xl font-black mb-3 italic uppercase tracking-tighter text-gray-900">Google Карти</h3>
-                <p class="text-gray-500 text-xs md:text-sm mb-6 md:mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг за лічені дні.</p>
-                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full text-center shadow-lg shadow-indigo-100">Купити відгуки</a>
-            </div>
-
-            <div class="review-side hidden lg:block bg-white p-6 rounded-[35px] border border-gray-100 shadow-sm w-72 flex-shrink-0">
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-[10px] font-black">M</div>
-                    <span class="font-black text-[10px] uppercase">Максим Д.</span>
-                </div>
-                <div class="flex text-indigo-500 text-[10px] mb-2">★★★★★</div>
-                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Найкращий сервіс в Україні. Все офіційно через кабінет."</p>
+                <h3 class="text-2xl font-black mb-3 italic uppercase italic">Google Карти</h3>
+                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full text-center">Купити відгуки</a>
             </div>
         </div>
     </main>
@@ -116,23 +106,6 @@
     <script>
         const API_URL = "https://review-market.onrender.com";
         const CLIENT_ID = "870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com";
-
-        async function executeTopUp() {
-            const user = JSON.parse(localStorage.getItem('rm_user'));
-            const pass = document.getElementById('admPass').value;
-            const amountInput = document.getElementById('admAmount').value;
-            if(!user) return;
-            const finalAmount = Math.round(parseFloat(amountInput));
-            try {
-                const res = await fetch(`${API_URL}/admin/topup`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ password: pass, amount: finalAmount, email: user.email })
-                });
-                const data = await res.json();
-                if(data.success) { location.reload(); }
-            } catch (e) { console.error("Admin error"); }
-        }
 
         function onGoogleAuth(response) {
             const base64Url = response.credential.split('.')[1];
@@ -154,40 +127,40 @@
             } catch (e) { return 0; }
         }
 
+        function initGoogleBtn() {
+            if (window.google && window.google.accounts) {
+                google.accounts.id.initialize({
+                    client_id: CLIENT_ID,
+                    callback: onGoogleAuth
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("auth-section"),
+                    { theme: "outline", size: "medium", shape: "pill", type: "standard", width: "120" }
+                );
+            } else {
+                // Если Google еще не загрузился, проверяем снова через 200мс
+                setTimeout(initGoogleBtn, 200);
+            }
+        }
+
         async function renderUser() {
             const user = JSON.parse(localStorage.getItem('rm_user'));
             const balanceElement = document.getElementById('user-balance');
             const authSection = document.getElementById('auth-section');
 
-            if(user) {
+            if (user) {
                 balanceElement.innerText = "... ₴";
                 const balance = await fetchBalance(user.email, user.name);
                 balanceElement.innerText = balance + " ₴";
                 authSection.innerHTML = `
-                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-2 md:px-3 py-1.5 rounded-full shadow-sm">
-                        <img src="${user.picture}" class="w-5 h-5 md:w-6 md:h-6 rounded-full shadow-inner">
-                        <span class="font-black text-[9px] md:text-[10px] uppercase italic text-black truncate max-w-[60px] md:max-w-none">${user.name.split(' ')[0]}</span>
-                        <button onclick="logout()" class="text-[8px] md:text-[9px] text-red-400 font-black ml-1 hover:text-red-600 uppercase transition-colors">Вихід</button>
+                    <div class="flex items-center gap-1.5 bg-white border border-gray-200 px-2 py-1 rounded-full shadow-sm">
+                        <img src="${user.picture}" class="w-5 h-5 rounded-full">
+                        <span class="font-black text-[9px] uppercase italic text-black truncate max-w-[50px]">${user.name.split(' ')[0]}</span>
+                        <button onclick="logout()" class="text-[8px] text-red-400 font-black ml-1 uppercase">Exit</button>
                     </div>`;
             } else {
-                // Если разлогинен, создаем кнопку
-                authSection.innerHTML = `<div id="google-signin-btn"></div>`;
-                
-                // Даем Google API время на инициализацию
-                setTimeout(() => {
-                    if (window.google) {
-                        google.accounts.id.initialize({
-                            client_id: CLIENT_ID,
-                            callback: onGoogleAuth
-                        });
-                        google.accounts.id.renderButton(
-                            document.getElementById("google-signin-btn"),
-                            { theme: "outline", size: "medium", shape: "pill" }
-                        );
-                    }
-                }, 200);
+                initGoogleBtn();
             }
-            authSection.style.display = 'block';
         }
 
         function logout() { 
@@ -196,6 +169,22 @@
         }
 
         window.onload = renderUser;
+
+        async function executeTopUp() {
+            const user = JSON.parse(localStorage.getItem('rm_user'));
+            const pass = document.getElementById('admPass').value;
+            const amountInput = document.getElementById('admAmount').value;
+            if(!user) return;
+            try {
+                const res = await fetch(`${API_URL}/admin/topup`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ password: pass, amount: Math.round(parseFloat(amountInput)), email: user.email })
+                });
+                const data = await res.json();
+                if(data.success) { location.reload(); }
+            } catch (e) { alert("Admin Error"); }
+        }
     </script>
 </body>
 </html>
