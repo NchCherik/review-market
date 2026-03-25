@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReviewMarket | Головна</title>
+    <title>ReviewMarket | Главная</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -12,10 +12,8 @@
         .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
         
-        /* Скрываем блок авторизации изначально, чтобы не было "мигания" кнопок */
-        #auth-section { display: none; }
+        #auth-section { display: none; } /* Прячем до загрузки данных */
 
-        /* Эффект для боковых отзывов */
         .review-side {
             filter: grayscale(100%);
             opacity: 0.4;
@@ -40,18 +38,18 @@
 
     <div id="adminModal" class="modal items-center justify-center">
         <div class="bg-gray-900 text-white p-8 rounded-[40px] max-w-xs w-full shadow-2xl border border-gray-700">
-            <h3 class="text-xl font-black mb-4 uppercase italic text-indigo-400 tracking-tighter">Admin Control</h3>
-            <input type="password" id="admPass" placeholder="Пароль" class="w-full bg-gray-800 p-4 rounded-2xl mb-3 text-sm border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <input type="number" id="admAmount" placeholder="Сума ₴" class="w-full bg-gray-800 p-4 rounded-2xl mb-4 text-sm border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <button onclick="executeTopUp()" class="w-full bg-indigo-600 py-4 rounded-2xl font-black uppercase text-xs hover:bg-indigo-500 transition-all">Нарахувати</button>
-            <button onclick="document.getElementById('adminModal').style.display='none'" class="w-full text-gray-500 text-[10px] mt-6 uppercase font-black tracking-widest text-center">Закрити</button>
+            <h3 class="text-xl font-black mb-4 uppercase italic text-indigo-400">Admin Control</h3>
+            <input type="password" id="admPass" placeholder="Пароль" class="w-full bg-gray-800 p-4 rounded-2xl mb-3 text-sm border border-gray-700 text-white focus:outline-none">
+            <input type="number" id="admAmount" placeholder="Сумма ₴" class="w-full bg-gray-800 p-4 rounded-2xl mb-4 text-sm border border-gray-700 text-white focus:outline-none">
+            <button onclick="executeTopUp()" class="w-full bg-indigo-600 py-4 rounded-2xl font-black uppercase text-xs hover:bg-indigo-500 transition-all">Начислить</button>
+            <button onclick="document.getElementById('adminModal').style.display='none'" class="w-full text-gray-500 text-[10px] mt-6 uppercase font-black text-center">Закрыть</button>
         </div>
     </div>
 
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2 relative">
-                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer group">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg relative cursor-pointer">
                     <span class="text-white font-black text-xl italic">R</span>
                     <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0"></div>
                 </div>
@@ -82,33 +80,32 @@
         <div class="text-center mb-16">
             <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-6 py-2 rounded-full shadow-sm hover:scale-105 transition-all mb-8 group">
                 <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600">Переваги</span>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600">Преимущества</span>
             </a>
             
             <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none uppercase italic">
-                Керуй своєю <br><span class="text-indigo-600">репутацією</span>
+                Управляй своей <br><span class="text-indigo-600">репутацией</span>
             </h2>
-            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto">Професійне просування на картах. Безпечно. Швидко.</p>
+            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto">Профессиональное продвижение на картах. Безопасно. Быстро.</p>
         </div>
 
         <div class="flex items-center justify-center gap-6 overflow-visible mt-12">
-            
             <div class="review-side hidden lg:block bg-white p-6 rounded-[35px] border border-gray-100 shadow-sm w-72 flex-shrink-0">
                 <div class="flex items-center gap-2 mb-3">
                     <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-black">A</div>
                     <span class="font-black text-[10px] uppercase">Артем В.</span>
                 </div>
                 <div class="flex text-indigo-500 text-[10px] mb-2">★★★★★</div>
-                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Замовив 10 відгуків для свого кафе. Все з'явилося протягом 3 днів. Клієнти стали заходити частіше!"</p>
+                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Заказал 10 отзывов для кафе. Всё появилось за 3 дня. Клиенты стали заходить чаще!"</p>
             </div>
 
             <div class="bg-white p-10 rounded-[45px] border border-gray-100 shadow-2xl group relative overflow-hidden max-w-md w-full z-10 scale-105 border-b-4 border-b-indigo-500">
                 <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8 group-hover:-rotate-6 transition-transform">
                     <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
-                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
-                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг за лічені дні.</p>
-                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full text-center shadow-lg shadow-indigo-100">Купити відгуки</a>
+                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карты</h3>
+                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Отзывы 5★ с гарантией от удаления. Улучшим рейтинг за считанные дни.</p>
+                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full text-center shadow-lg shadow-indigo-100">Купить отзывы</a>
             </div>
 
             <div class="review-side hidden lg:block bg-white p-6 rounded-[35px] border border-gray-100 shadow-sm w-72 flex-shrink-0">
@@ -117,18 +114,17 @@
                     <span class="font-black text-[10px] uppercase">Максим Д.</span>
                 </div>
                 <div class="flex text-indigo-500 text-[10px] mb-2">★★★★★</div>
-                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Найкращий сервіс в Україні. Все офіційно, через кабінет. Підтримка відповідає миттєво."</p>
+                <p class="text-[11px] text-gray-500 font-medium leading-relaxed italic">"Лучший сервис. Всё официально, через личный кабинет. Поддержка отвечает мгновенно."</p>
             </div>
-
         </div>
     </main>
 
     <div id="rechargeModal" class="modal flex items-center justify-center">
         <div class="bg-white p-10 rounded-[40px] max-w-sm w-full mx-4 shadow-2xl text-center border border-gray-100">
-            <h4 class="text-2xl font-black mb-4 uppercase italic">Поповнення</h4>
-            <p class="text-gray-500 text-sm mb-8">Наразі автоматичне поповнення недоступне. Напишіть адміну:</p>
-            <a href="https://t.me/ReviewMarket_Admin" target="_blank" class="block w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 transition-all uppercase italic tracking-widest">Написати адміну</a>
-            <button onclick="toggleModal(false)" class="text-gray-400 text-[10px] font-black uppercase tracking-widest mt-6">Закрити</button>
+            <h4 class="text-2xl font-black mb-4 uppercase italic">Пополнение</h4>
+            <p class="text-gray-500 text-sm mb-8">Автоматическое пополнение временно недоступно. Напишите админу:</p>
+            <a href="https://t.me/ReviewMarket_Admin" target="_blank" class="block w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 transition-all uppercase italic tracking-widest">Написать админу</a>
+            <button onclick="toggleModal(false)" class="text-gray-400 text-[10px] font-black uppercase tracking-widest mt-6">Закрыть</button>
         </div>
     </div>
 
@@ -144,9 +140,7 @@
             const pass = document.getElementById('admPass').value;
             const amountInput = document.getElementById('admAmount').value;
             if(!user) return;
-
-            const finalAmount = Math.round(parseFloat(amountInput)); // Фикс для BigInt
-
+            const finalAmount = Math.round(parseFloat(amountInput));
             try {
                 const res = await fetch(`${API_URL}/admin/topup`, {
                     method: 'POST',
@@ -155,7 +149,7 @@
                 });
                 const data = await res.json();
                 if(data.success) { location.reload(); }
-            } catch (e) { console.error("Ошибка админки"); }
+            } catch (e) { console.error("Admin error"); }
         }
 
         async function onGoogleAuth(response) {
@@ -191,10 +185,10 @@
                     <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
                         <img src="${user.picture}" class="w-6 h-6 rounded-full">
                         <span class="font-black text-[10px] uppercase italic">${user.name.split(' ')[0]}</span>
-                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 hover:text-red-600 uppercase">Вихід</button>
+                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 hover:text-red-600 uppercase">Выход</button>
                     </div>`;
             }
-            authSection.style.display = 'block'; // Показываем блок только после проверки
+            authSection.style.display = 'block';
         }
 
         function logout() { localStorage.removeItem('rm_user'); location.reload(); }
