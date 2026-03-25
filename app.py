@@ -9,9 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # --- НАСТРОЙКИ БАЗЫ ДАННЫХ SUPABASE ---
-# Твой URL проекта
 SUPABASE_URL = "https://muunhaompmqkariozjjv.supabase.co"
-# Твой ANON KEY (длинная строка со скриншота)
 SUPABASE_KEY = "sb_publishable_3pTVyZK26luZUch_HdkAJQ_ABFHDxr5"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -21,7 +19,7 @@ TELEGRAM_TOKEN = "8561764864:AAFoVwWzfQ4nyvwCzoa4JrUlt0s5pr_oDP0"
 TELEGRAM_CHAT_ID = "7062047050"
 
 # ПАРОЛЬ ДЛЯ СЕКРЕТНОГО ПОПОЛНЕНИЯ (ИЗМЕНИ НА СВОЙ)
-ADMIN_PASSWORD = "Lololowka"
+ADMIN_PASSWORD = "ГОРЯЧИЙ_ПАРОЛЬ_123"
 
 # ---------------------------------------------------------
 # 1. МАРШРУТ: ПОЛУЧЕНИЕ БАЛАНСА И АВТО-РЕГИСТРАЦИЯ
@@ -64,7 +62,7 @@ def admin_topup():
         data = request.json
         provided_password = data.get('password')
         target_email = data.get('email')
-        amount_to_add = int(data.get('amount', 0))
+        amount_to_add = float(data.get('amount', 0)) # Используем float для точности
 
         # Проверка прав доступа
         if provided_password != ADMIN_PASSWORD:
@@ -74,7 +72,7 @@ def admin_topup():
         check_user = supabase.table("profiles").select("balance").eq("email", target_email).execute()
         
         if check_user.data:
-            current_bal = check_user.data[0]['balance']
+            current_bal = float(check_user.data[0]['balance'])
             new_bal = current_bal + amount_to_add
             
             # Обновление баланса в базе
@@ -96,24 +94,24 @@ def handle_order():
     try:
         data = request.json
         email = data.get('user_email')
-        price = int(data.get('price', 0)) # Цена теперь приходит с сайта
+        price = float(data.get('price', 0)) # Цена может быть дробной (32.5)
         order_type = data.get('type', 'Не вказано')
         package_name = data.get('package', 'Стандарт')
         target_link = data.get('target', 'Не вказано')
         contact_info = data.get('contact', 'Не вказано')
         additional_info = data.get('details', 'Немає')
 
-        # Проверяем, хватает ли денег
+        # Проверяем баланс
         user_check = supabase.table("profiles").select("balance").eq("email", email).execute()
         
-        if not user_check.data or user_check.data[0]['balance'] < price:
+        if not user_check.data or float(user_check.data[0]['balance']) < price:
             return jsonify({"success": False, "error": "Недостатньо коштів на балансі!"}), 400
 
         # Списание средств
-        new_balance = user_check.data[0]['balance'] - price
+        new_balance = float(user_check.data[0]['balance']) - price
         supabase.table("profiles").update({"balance": new_balance}).eq("email", email).execute()
 
-        # Формирование сообщения для Telegram
+        # Сообщение в ТГ
         tg_message = (
             f"🚀 **НОВЕ ЗАМОВЛЕННЯ: {order_type}**\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
@@ -127,7 +125,6 @@ def handle_order():
             f"💎 **Залишок:** {new_balance} ₴"
         )
         
-        # Отправка в бота
         tg_url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
         requests.post(tg_url, json={
             "chat_id": TELEGRAM_CHAT_ID, 
@@ -141,8 +138,6 @@ def handle_order():
         print(f"Ошибка заказа: {e}")
         return jsonify({"success": False, "error": "Помилка сервера"}), 500
 
-# --- ЗАПУСК ---
 if __name__ == '__main__':
-    # Порт для Render
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
