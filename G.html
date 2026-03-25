@@ -43,66 +43,74 @@
 <body class="text-gray-900">
 
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
-            <a href="index.html" class="flex items-center gap-1.5 shrink-0">
-                <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
-                    <span class="text-white font-black text-lg italic">R</span>
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+            <a href="index.html" class="flex items-center gap-2 shrink-0 group">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                    <span class="text-white font-black text-xl italic">R</span>
                 </div>
                 <h1 class="font-black text-sm md:text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </a>
             
-            <div id="balance-display" class="font-black text-indigo-600 bg-indigo-50 px-4 py-1.5 rounded-full border border-indigo-100 text-[11px] md:text-sm shadow-sm shrink-0">
+            <div id="balance-display" class="font-black text-indigo-600 bg-indigo-50 px-5 py-2 rounded-full border border-indigo-100 text-xs md:text-sm shadow-sm shrink-0">
                 0 ₴
             </div>
         </div>
     </header>
 
-    <main class="max-w-xl mx-auto px-4 py-8">
-        <div class="text-center mb-8">
-            <h2 class="text-4xl md:text-6xl font-black mb-2 uppercase italic tracking-tighter">
+    <main class="max-w-6xl mx-auto px-4 py-8 md:py-12">
+        <div class="text-center mb-10">
+            <h2 class="text-4xl md:text-7xl font-black mb-2 uppercase italic tracking-tighter">
                 Google <span class="text-indigo-600">Maps</span>
             </h2>
-            <p class="text-gray-400 font-bold uppercase text-[9px] tracking-[0.3em]">30 ₴ за 1 відгук</p>
+            <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">Ціна за 1 відгук: 30 ₴</p>
         </div>
 
-        <div class="bg-white p-6 md:p-10 rounded-[35px] md:rounded-[50px] border border-gray-100 shadow-xl mb-6">
-            <div class="space-y-6">
-                <div class="flex flex-col gap-2">
-                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 ml-4">Кількість</label>
-                    <input type="number" id="count-input" value="10" min="1" oninput="updateByCount()" class="w-full bg-gray-50 border border-gray-100 p-4 md:p-6 rounded-[25px] focus:ring-4 focus:ring-indigo-500/10 outline-none font-black text-2xl text-indigo-600 transition-all">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 items-start">
+            
+            <div class="bg-white p-8 md:p-12 rounded-[40px] md:rounded-[55px] border border-gray-100 shadow-xl h-full flex flex-col justify-center">
+                <div class="space-y-8">
+                    <div class="flex flex-col gap-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Кількість відгуків</label>
+                        <input type="number" id="count-input" value="10" min="1" oninput="updateByCount()" class="w-full bg-gray-50 border border-gray-100 p-6 rounded-[30px] focus:ring-4 focus:ring-indigo-500/10 outline-none font-black text-3xl text-indigo-600 transition-all">
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Загальна сума (₴)</label>
+                        <input type="number" id="price-input" value="300" oninput="updateByPrice()" class="w-full bg-gray-50 border border-gray-100 p-6 rounded-[30px] focus:ring-4 focus:ring-indigo-500/10 outline-none font-black text-3xl transition-all">
+                    </div>
+
+                    <div class="pt-6 px-2">
+                        <input type="range" id="range-slider" min="1" max="100" step="1" value="10" oninput="updateBySlider()" class="cursor-pointer">
+                        <div class="flex justify-between mt-4 text-[9px] font-black text-gray-300 uppercase tracking-widest">
+                            <span>1 відгук</span>
+                            <span>100 відгуків</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 md:p-12 rounded-[40px] md:rounded-[55px] border border-gray-100 shadow-sm space-y-7">
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Посилання на локацію</label>
+                    <input type="text" id="target-link" placeholder="бізнес.ком" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
+                    <p id="url-error" class="text-[10px] text-red-500 font-bold mt-3 ml-4 hidden uppercase italic">Потрібен формат: текст.текст</p>
                 </div>
 
-                <div class="flex flex-col gap-2">
-                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 ml-4">Сума (₴)</label>
-                    <input type="number" id="price-input" value="300" oninput="updateByPrice()" class="w-full bg-gray-50 border border-gray-100 p-4 md:p-6 rounded-[25px] focus:ring-4 focus:ring-indigo-500/10 outline-none font-black text-2xl transition-all">
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Текст для відгуків</label>
+                    <textarea id="order-details" rows="4" placeholder="Напишіть ваші побажання..." class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold"></textarea>
                 </div>
+
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Telegram для зв'язку</label>
+                    <input type="text" id="user-contact" placeholder="@username" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
+                </div>
+
+                <button onclick="submitOrder()" class="w-full bg-black text-white py-6 md:py-8 rounded-[30px] font-black uppercase italic tracking-[0.2em] text-xs md:text-sm hover:bg-gray-800 active:scale-95 transition-all shadow-2xl shadow-gray-200">
+                    Замовити за <span id="btn-price">300</span> ₴
+                </button>
             </div>
 
-            <div class="mt-8 px-2">
-                <input type="range" id="range-slider" min="1" max="100" step="1" value="10" oninput="updateBySlider()" class="cursor-pointer">
-            </div>
-        </div>
-
-        <div class="bg-white p-6 md:p-10 rounded-[35px] md:rounded-[50px] border border-gray-100 shadow-sm space-y-6">
-            <div>
-                <label class="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-4">Посилання на локацію</label>
-                <input type="text" id="target-link" placeholder="наприклад: google.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold text-sm">
-                <p id="url-error" class="text-[9px] text-red-500 font-bold mt-2 ml-4 hidden uppercase tracking-wider">Некоректний формат (має бути текст.текст)</p>
-            </div>
-
-            <div>
-                <label class="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-4">Текст відгуків</label>
-                <textarea id="order-details" rows="3" placeholder="Ваші побажання..." class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold text-sm"></textarea>
-            </div>
-
-            <div>
-                <label class="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-4">Ваш Telegram</label>
-                <input type="text" id="user-contact" placeholder="@username" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold text-sm">
-            </div>
-
-            <button onclick="submitOrder()" class="w-full bg-black text-white py-5 rounded-[25px] font-black uppercase italic tracking-[0.2em] text-[11px] md:text-sm hover:bg-gray-800 active:scale-95 transition-all shadow-xl">
-                Замовити за <span id="btn-price">300</span> ₴
-            </button>
         </div>
     </main>
 
@@ -139,13 +147,15 @@
         async function submitOrder() {
             const userData = JSON.parse(localStorage.getItem('rm_user'));
             const targetLink = document.getElementById('target-link').value;
+            const userContact = document.getElementById('user-contact').value;
             const errorText = document.getElementById('url-error');
             
-            // ПРОВЕРКА: текст.текст
+            // ПРОВЕРКИ
             const urlPattern = /^.+\..+$/; 
             
-            if(!userData) return alert("Будь ласка, увійдіть в акаунт!");
+            if(!userData) return alert("Авторизуйтесь через Google!");
 
+            // Валидация ссылки
             if (!urlPattern.test(targetLink)) {
                 errorText.classList.remove('hidden');
                 document.getElementById('target-link').classList.add('border-red-400');
@@ -155,6 +165,11 @@
                 document.getElementById('target-link').classList.remove('border-red-400');
             }
 
+            // Валидация Телеграм (наличие @)
+            if (!userContact.includes('@')) {
+                return alert("Вкажіть Telegram з символом @");
+            }
+
             const payload = {
                 user_email: userData.email,
                 price: parseFloat(priceInput.value),
@@ -162,10 +177,10 @@
                 type: "Google Maps",
                 target: targetLink,
                 details: document.getElementById('order-details').value,
-                contact: document.getElementById('user-contact').value
+                contact: userContact
             };
 
-            if(!payload.contact || payload.price <= 0) return alert("Заповніть всі поля!");
+            if(payload.price <= 0) return alert("Виберіть кількість!");
 
             try {
                 const res = await fetch(`${API_URL}/order`, {
@@ -175,12 +190,12 @@
                 });
                 const result = await res.json();
                 if(result.success) {
-                    alert("Замовлення прийнято!");
+                    alert("Успішно! Ми зв'яжемося з вами.");
                     window.location.href = "index.html";
                 } else {
                     alert(result.error);
                 }
-            } catch (e) { alert("Помилка мережі"); }
+            } catch (e) { alert("Помилка з'єднання"); }
         }
 
         window.onload = async () => {
