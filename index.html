@@ -12,58 +12,55 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
         
-        .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
-        #adminModal { z-index: 100; }
-        
-        /* Стили для карусели отзывов */
-        .reviews-strip {
+
+        /* Анімація нескінченного руху */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 100vw;
-            height: 500px;
-            overflow: visible; /* Чтобы отзывы не обрезались по бокам */
-        }
-        
-        .review-card {
-            background-color: white;
-            padding: 40px;
-            border-radius: 40px;
-            border: 1px solid #f1f5f9; /* gray-100 */
-            width: 380px;
-            text-align: left;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%) scale(0.85);
-            opacity: 0.3;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            overflow: hidden;
             user-select: none;
-            z-index: 10;
+            gap: 20px;
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
-        
-        /* Центральный "главный" отзыв */
-        .review-card.main {
-            transform: translateY(-50%) scale(1);
-            opacity: 1;
-            z-index: 30;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08);
-            width: 420px;
-        }
-        
-        /* Боковые отзывы */
-        .review-card.side {
-            z-index: 20;
-            cursor: pointer;
-        }
-        
-        .review-card.left { left: 5%; opacity: 0.8; transform: translateY(-50%) scale(0.9) translateX(0); }
-        .review-card.right { right: 5%; opacity: 0.8; transform: translateY(-50%) scale(0.9) translateX(0); }
 
-        /* Эффект при наведении на боковые */
-        .review-card.side:hover { opacity: 1; transform: translateY(-50%) scale(0.92); }
+        .marquee-content {
+            display: flex;
+            gap: 20px;
+            animation: marquee 30s linear infinite;
+            padding: 20px 0;
+        }
 
+        /* Зупинка при наведенні */
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+
+        .rev-card {
+            background: white;
+            padding: 24px;
+            border-radius: 32px;
+            border: 1px solid #f1f5f9;
+            width: 280px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease;
+        }
+        
+        .rev-card:hover { transform: translateY(-5px); border-color: #e2e8f0; }
+
+        /* Пульсація для кнопки Переваги */
+        @keyframes pulse-indigo {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(99, 102, 241, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        .animate-pulse-custom { animation: pulse-indigo 2s infinite; }
     </style>
 </head>
 <body class="text-gray-900">
@@ -81,7 +78,7 @@
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2 relative">
-                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200 relative cursor-default">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200 relative">
                     <span class="text-white font-black text-xl italic">R</span>
                     <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0 cursor-pointer"></div>
                 </div>
@@ -107,11 +104,12 @@
         </div>
     </header>
 
-    <main class="py-16 overflow-visible">
-        <div class="text-center mb-16 max-w-5xl mx-auto px-4">
-            <div class="block mb-4">
-                <div class="inline-block bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">№1 в Україні</div>
-            </div>
+    <main class="py-12">
+        <div class="text-center mb-12 max-w-5xl mx-auto px-4">
+            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-6 py-2 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all mb-8 group">
+                <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-hover:text-indigo-600">Переваги</span>
+            </a>
             
             <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none uppercase italic">
                 Керуй своєю <br><span class="text-indigo-600">репутацією</span>
@@ -121,39 +119,25 @@
             </p>
         </div>
 
-        <div class="reviews-strip" id="reviewsCarousel">
-            
-            <div class="review-card side left" onclick="prevReview()">
-                <div class="flex items-center gap-4 mb-6">
-                    <img src="https://lh3.googleusercontent.com/a/ACg8ocKOXwE9pYF00803q2o9g0G0_OaF8Kz5hC3y4-3Y0_Wk4-8O0=s192-c-rg" class="w-12 h-12 rounded-2xl shadow-sm">
-                    <div>
-                        <p class="font-black text-lg">Олексій К.</p>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Клієнт • 5 звезд</p>
-                    </div>
+        <div class="marquee-container mb-12">
+            <div class="marquee-content" id="top-marquee">
                 </div>
-                <p class="text-gray-500 text-sm leading-relaxed">"Все круто! Замовив 10 відгуків, прийшли швидко. Рейтинг піднявся, клієнтів стало більше. Раджу!"</p>
-            </div>
+        </div>
 
-            <div class="review-card main">
-                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="max-w-5xl mx-auto px-4 flex justify-center mb-12">
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-2xl max-w-md w-full text-center relative z-10 hover:scale-[1.02] transition-transform">
+                <div class="w-20 h-20 bg-green-50 text-green-500 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-inner">
+                    <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
-                <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
-                <p class="text-gray-500 text-sm mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг вашого бізнесу за лічені дні.</p>
-                <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest shadow-lg shadow-indigo-100 w-full text-center">Купити відгуки</a>
+                <h3 class="text-4xl font-black mb-4 italic uppercase tracking-tighter">Google Карти</h3>
+                <p class="text-gray-500 text-sm mb-10 leading-relaxed">Відгуки 5★ з повною гарантією від видалення. Найкращий вибір для локального бізнесу.</p>
+                <a href="G.html" class="inline-block bg-indigo-600 text-white px-10 py-5 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest w-full shadow-xl shadow-indigo-100">Купити відгуки</a>
             </div>
+        </div>
 
-            <div class="review-card side right" onclick="nextReview()">
-                <div class="flex items-center gap-4 mb-6">
-                    <img src="https://lh3.googleusercontent.com/a/ACg8ocL3f8P8-qXhP9QvY5hN_S7t9E6v_7M4rD8f3_7V4JgGq2N_g=s192-c-rg" class="w-12 h-12 rounded-2xl shadow-sm">
-                    <div>
-                        <p class="font-black text-lg">Марія Д.</p>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Клієнт • 5 звезд</p>
-                    </div>
+        <div class="marquee-container">
+            <div class="marquee-content" id="bottom-marquee" style="animation-direction: reverse;">
                 </div>
-                <p class="text-gray-500 text-sm leading-relaxed">"Все круто! Сервіс вогонь. Швидко, якісно і без видалень. Буду замовляти ще!"</p>
-            </div>
-
         </div>
     </main>
 
@@ -163,57 +147,48 @@
                 <span class="text-2xl font-black">₴</span>
             </div>
             <h4 class="text-2xl font-black mb-4 uppercase italic">Поповнення</h4>
-            <p class="text-gray-500 text-sm mb-8 leading-relaxed">Наразі автоматичне поповнення недоступне. Напишіть адміну:</p>
+            <p class="text-gray-500 text-sm mb-8 leading-relaxed">Напишіть адміну для поповнення балансу:</p>
             <a href="https://t.me/ReviewMarket_Admin" target="_blank" class="block w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 mb-6 transition-all shadow-lg shadow-indigo-100 uppercase italic tracking-widest">Написати адміну</a>
-            <button onclick="toggleModal(false)" class="text-gray-400 text-[10px] font-black uppercase tracking-widest hover:text-black transition-colors">Закрити вікно</button>
+            <button onclick="toggleModal(false)" class="text-gray-400 text-[10px] font-black uppercase tracking-widest hover:text-black transition-colors">Закрити</button>
         </div>
     </div>
 
     <script>
         const API_URL = "https://review-market.onrender.com";
 
-        // ЛОГИКА КАУРСЕЛИ
-        let currentReviewIndex = 0;
+        // ДАНІ ДЛЯ ВІДГУКІВ
         const reviews = [
-            { name: "Олексій К.", pic: "https://lh3.googleusercontent.com/a/ACg8ocKOXwE9pYF00803q2o9g0G0_OaF8Kz5hC3y4-3Y0_Wk4-8O0=s192-c-rg", text: '"Все круто! Замовив 10 відгуків, прийшли швидко. Рейтинг піднявся, клієнтів стало більше. Раджу!"' },
-            { name: "Марія Д.", pic: "https://lh3.googleusercontent.com/a/ACg8ocL3f8P8-qXhP9QvY5hN_S7t9E6v_7M4rD8f3_7V4JgGq2N_g=s192-c-rg", text: '"Все круто! Сервіс вогонь. Швидко, якісно і без видалень. Буду замовляти ще!"' },
-            { name: "Іван Б.", pic: "https://lh3.googleusercontent.com/a/ACg8ocI4s_Gf5-pM8g8-hY_Y4eX0Jb7_Gg0-v-P4=s192-c-rg", text: '"Все круто! Якість відгуків на висоті. Створені професійно, виглядають живими. Раджу всім!"' },
-            { name: "Олена М.", pic: "https://lh3.googleusercontent.com/a/ACg8ocJkR7M0E8oG9g0-t4A-G6J0_w-U4gXb4hS=s192-c-rg", text: '"Все круто! Приємно здивована швидкістю та якістю виконання. Рейтинг піднявся миттєво!"' },
-            { name: "Віктор П.", pic: "https://lh3.googleusercontent.com/a/ACg8ocHqR7M0E8oG9g0-v-P4G6J0_w-U4gXb4hS=s192-c-rg", text: '"Все круто! Дуже допомагає просуванню бізнесу. Клієнтів стало значно більше. Дякую!"' },
-            { name: "Світлана Л.", pic: "https://lh3.googleusercontent.com/a/ACg8ocKkR7M0E8oG9g0-t4A-G6J0_w-U4gXb4hS=s192-c-rg", text: '"Все круто! Професійний підхід, чудовий сервіс. Буду звертатися ще!"' },
+            { name: "Андрій", color: "bg-blue-100 text-blue-600", letter: "A" },
+            { name: "Максим", color: "bg-green-100 text-green-600", letter: "M" },
+            { name: "Олена", color: "bg-purple-100 text-purple-600", letter: "O" },
+            { name: "Дмитро", color: "bg-orange-100 text-orange-600", letter: "D" },
+            { name: "Сергій", color: "bg-red-100 text-red-600", letter: "S" },
+            { name: "Яна", color: "bg-pink-100 text-pink-600", letter: "Y" }
         ];
 
-        function nextReview() {
-            currentReviewIndex = (currentReviewIndex + 1) % reviews.length;
-            updateCarousel();
+        function createReviewCard(rev) {
+            return `
+                <div class="rev-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 ${rev.color} rounded-2xl flex items-center justify-center font-black text-sm shadow-sm">${rev.letter}</div>
+                        <div>
+                            <p class="text-[12px] font-black uppercase italic tracking-tighter">${rev.name}</p>
+                            <p class="text-[9px] text-indigo-500 font-bold uppercase">Клієнт • 5★</p>
+                        </div>
+                    </div>
+                    <p class="text-[12px] text-gray-500 leading-relaxed font-medium italic">"Все круто! Замовив послуги, результат отримав дуже швидко. Якість на висоті!"</p>
+                </div>`;
         }
 
-        function prevReview() {
-            currentReviewIndex = (currentReviewIndex - 1 + reviews.length) % reviews.length;
-            updateCarousel();
-        }
+        // Заповнюємо стрічки
+        const topM = document.getElementById('top-marquee');
+        const bottomM = document.getElementById('bottom-marquee');
+        
+        const content = reviews.map(r => createReviewCard(r)).join('');
+        topM.innerHTML = content + content; // Дублюємо для безшовності
+        bottomM.innerHTML = content + content;
 
-        function updateCarousel() {
-            const leftCard = document.querySelector(".review-card.left");
-            const rightCard = document.querySelector(".review-card.right");
-            
-            const leftIndex = (currentReviewIndex - 1 + reviews.length) % reviews.length;
-            const rightIndex = (currentReviewIndex + 1) % reviews.length;
-            
-            fillCard(leftCard, reviews[leftIndex]);
-            fillCard(rightCard, reviews[rightIndex]);
-        }
-
-        function fillCard(card, data) {
-            card.querySelector('img').src = data.pic;
-            card.querySelector('.font-black.text-lg').innerText = data.name;
-            card.querySelector('.text-gray-500.text-sm').innerText = data.text;
-        }
-
-        // Авто-переключение каждые 5 секунд
-        setInterval(nextReview, 5000);
-
-        // ИНИЦИАЛИЗАЦИЯ ИНТЕРФЕЙСА (Твоя оригинальная)
+        // ЛОГІКА АВТОРИЗАЦІЇ ТА БАЛАНСУ
         function toggleModal(show) { document.getElementById('rechargeModal').style.display = show ? 'flex' : 'none'; }
 
         async function executeTopUp() {
@@ -228,7 +203,7 @@
             });
             const data = await res.json();
             if(data.success) { alert("Успішно!"); location.reload(); }
-            else { alert("Помилка: " + data.error); }
+            else { alert("Помилка!"); }
         }
 
         async function onGoogleAuth(response) {
@@ -257,16 +232,16 @@
                 const balance = await fetchBalance(user.email, user.name);
                 document.getElementById('user-balance').innerText = balance + " ₴";
                 document.getElementById('auth-section').innerHTML = `
-                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
+                    <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm hover:border-indigo-200 transition-all">
                         <img src="${user.picture}" class="w-6 h-6 rounded-full">
-                        <span class="font-black text-[10px] uppercase italic">${user.name.split(' ')[0]}</span>
-                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 uppercase">Вихід</button>
+                        <span class="font-black text-[10px] uppercase italic tracking-tighter">${user.name.split(' ')[0]}</span>
+                        <button onclick="logout()" class="text-[9px] text-red-400 font-black ml-1 uppercase hover:text-red-600">Вихід</button>
                     </div>`;
             }
         }
 
         function logout() { localStorage.removeItem('rm_user'); location.reload(); }
-        window.onload = function() { renderUser(); updateCarousel(); }
+        window.onload = renderUser;
     </script>
 </body>
 </html>
