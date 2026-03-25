@@ -15,14 +15,28 @@
         }
         .font-black { font-weight: 900; }
         
-        .package-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Стилизация ползунка в стиле Indigo */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
         }
-        .package-card.active {
-            border-color: #6366f1;
-            background-color: #f5f3ff;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.1);
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 20px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            border: 3px solid white;
         }
     </style>
 </head>
@@ -39,7 +53,7 @@
             
             <div class="flex items-center gap-4">
                 <div id="balance-display" class="font-black text-indigo-600 bg-indigo-50 px-5 py-2 rounded-full border border-indigo-100 text-sm shadow-sm">
-                    Завантаження...
+                    0 ₴
                 </div>
             </div>
         </div>
@@ -47,117 +61,140 @@
 
     <main class="max-w-4xl mx-auto px-4 py-12">
         <div class="text-center mb-12">
-            <h2 class="text-5xl font-black mb-4 uppercase italic tracking-tighter">
+            <h2 class="text-5xl md:text-6xl font-black mb-4 uppercase italic tracking-tighter">
                 Google <span class="text-indigo-600">Maps</span>
             </h2>
-            <p class="text-gray-400 font-bold uppercase text-[11px] tracking-[0.3em]">Відгуки по 30 ₴ за штуку</p>
+            <p class="text-gray-400 font-bold uppercase text-[11px] tracking-[0.3em]">Ціна за 1 відгук: 30 ₴</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div id="pkg-1" onclick="selectPackage('pkg-1', 1, '1 відгук')" class="package-card active p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
-                <div class="text-3xl font-black mb-2 italic">30 ₴</div>
-                <div class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">1 ВІДГУК</div>
+        <div class="bg-white p-8 md:p-12 rounded-[50px] border border-gray-100 shadow-xl shadow-gray-100/50 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Кількість відгуків</label>
+                    <input type="number" id="count-input" value="10" min="1" oninput="updateByCount()" class="w-full bg-gray-50 border border-gray-100 p-6 rounded-[30px] focus:ring-4 focus:ring-indigo-500/10 outline-none font-black text-3xl text-indigo-600 transition-all">
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Загальна сума (₴)</label>
+                    <input type="number" id="price-input" value="300" oninput="updateByPrice()" class="w-full bg-gray-50 border border-gray-100 p-6 rounded-[30px] focus:ring-4 focus:ring-indigo-500/10 outline-none font-black text-3xl transition-all">
+                </div>
             </div>
 
-            <div id="pkg-2" onclick="selectPackage('pkg-2', 5, '5 відгуків')" class="package-card p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
-                <div class="text-3xl font-black mb-2 italic">150 ₴</div>
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">5 ВІДГУКІВ</div>
-            </div>
-
-            <div id="pkg-3" onclick="selectPackage('pkg-3', 10, '10 відгуків')" class="package-card p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
-                <div class="text-3xl font-black mb-2 italic">300 ₴</div>
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">10 ВІДГУКІВ</div>
+            <div class="mt-12 px-2">
+                <input type="range" id="range-slider" min="1" max="100" step="1" value="10" oninput="updateBySlider()" class="cursor-pointer">
+                <div class="flex justify-between mt-4 text-[10px] font-black text-gray-300 uppercase tracking-widest px-1">
+                    <span>1 відгук</span>
+                    <span>100 відгуків</span>
+                </div>
             </div>
         </div>
 
-        <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-xl shadow-gray-100/50">
-            <div class="grid grid-cols-1 gap-8">
-                
-                <div class="relative">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Посилання на локацію</label>
-                    <input type="text" id="target-link" placeholder="Вставте лінк на карти..." class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
-                </div>
-
-                <div class="relative">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Текст для відгуків</label>
-                    <textarea id="order-details" rows="4" placeholder="Що мають написати люди?" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold"></textarea>
-                </div>
-
-                <div class="relative">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Ваш Telegram (@username)</label>
-                    <input type="text" id="user-contact" placeholder="@username" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
-                </div>
-
-                <button onclick="submitOrder()" class="w-full bg-black text-white py-6 rounded-3xl font-black uppercase italic tracking-[0.2em] text-sm hover:bg-gray-800 transition-all shadow-2xl shadow-gray-300">
-                    Оформити за <span id="price-tag">30</span> ₴
-                </button>
-
+        <div class="bg-white p-10 rounded-[50px] border border-gray-100 shadow-sm space-y-8">
+            <div class="relative">
+                <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Посилання на локацію</label>
+                <input type="text" id="target-link" placeholder="Вставте лінк на карти..." class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
             </div>
+
+            <div class="relative">
+                <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Текст для відгуків</label>
+                <textarea id="order-details" rows="4" placeholder="Що мають написати люди?" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold"></textarea>
+            </div>
+
+            <div class="relative">
+                <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Ваш Telegram (@username)</label>
+                <input type="text" id="user-contact" placeholder="@username" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
+            </div>
+
+            <button onclick="submitOrder()" class="w-full bg-black text-white py-7 rounded-[30px] font-black uppercase italic tracking-[0.2em] text-sm hover:bg-gray-800 transition-all shadow-2xl shadow-gray-200">
+                Оформити замовлення
+            </button>
         </div>
     </main>
 
     <script>
         const API_URL = "https://review-market.onrender.com";
-        const PRICE_PER_ONE = 30; // Новая цена
-        let selectedPrice = 30;
-        let selectedPackageName = "1 відгук";
+        const RATE = 30; // Цена за 1 отзыв
 
-        function selectPackage(elementId, count, name) {
-            document.querySelectorAll('.package-card').forEach(card => {
-                card.classList.remove('active');
-                card.querySelector('.text-indigo-500')?.classList.replace('text-indigo-500', 'text-gray-400');
-            });
+        const countInput = document.getElementById('count-input');
+        const priceInput = document.getElementById('price-input');
+        const rangeSlider = document.getElementById('range-slider');
 
-            const activeCard = document.getElementById(elementId);
-            activeCard.classList.add('active');
-            activeCard.querySelector('.text-gray-400').classList.replace('text-gray-400', 'text-indigo-500');
+        // Обновление при изменении количества
+        function updateByCount() {
+            let count = parseInt(countInput.value) || 0;
+            if(count < 0) count = 0;
+            
+            const price = count * RATE;
+            priceInput.value = price;
+            rangeSlider.value = count;
+        }
 
-            selectedPrice = count * PRICE_PER_ONE;
-            selectedPackageName = name;
-            document.getElementById('price-tag').innerText = selectedPrice;
+        // Обновление при изменении цены
+        function updateByPrice() {
+            const price = parseFloat(priceInput.value) || 0;
+            const count = Math.floor(price / RATE);
+            countInput.value = count;
+            rangeSlider.value = count;
+        }
+
+        // Обновление ползунком
+        function updateBySlider() {
+            countInput.value = rangeSlider.value;
+            updateByCount();
         }
 
         async function submitOrder() {
             const userData = JSON.parse(localStorage.getItem('rm_user'));
-            if(!userData) return alert("Авторизуйтесь!");
+            if(!userData) return alert("Будь ласка, авторизуйтесь!");
 
             const payload = {
                 user_email: userData.email,
-                price: selectedPrice,
-                package: selectedPackageName,
+                price: parseFloat(priceInput.value),
+                package: countInput.value + " відгуків (Google)",
                 type: "Google Maps",
                 target: document.getElementById('target-link').value,
                 details: document.getElementById('order-details').value,
                 contact: document.getElementById('user-contact').value
             };
 
-            if(!payload.target || !payload.contact) return alert("Заповніть поля!");
+            if(!payload.target || !payload.contact || payload.price <= 0) {
+                return alert("Заповніть всі поля та виберіть кількість!");
+            }
 
-            const response = await fetch(`${API_URL}/order`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            try {
+                const response = await fetch(`${API_URL}/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            const result = await response.json();
-            if(result.success) {
-                alert("Готово!");
-                window.location.href = "index.html";
-            } else {
-                alert(result.error);
+                const result = await response.json();
+                if(result.success) {
+                    alert("Замовлення успішно створено!");
+                    window.location.href = "index.html";
+                } else {
+                    alert(result.error || "Помилка при створенні замовлення");
+                }
+            } catch (e) {
+                alert("Помилка з'єднання з сервером");
             }
         }
 
+        // Загрузка баланса
         window.onload = async () => {
             const user = JSON.parse(localStorage.getItem('rm_user'));
             if(user) {
-                const res = await fetch(`${API_URL}/get_balance`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: user.email })
-                });
-                const data = await res.json();
-                document.getElementById('balance-display').innerText = (data.balance || 0) + " ₴";
+                try {
+                    const res = await fetch(`${API_URL}/get_balance`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: user.email })
+                    });
+                    const data = await res.json();
+                    document.getElementById('balance-display').innerText = (data.balance || 0) + " ₴";
+                } catch (e) {
+                    document.getElementById('balance-display').innerText = "Помилка";
+                }
             }
         };
     </script>
