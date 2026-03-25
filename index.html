@@ -4,22 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReviewMarket | Головна</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
+        
         .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
         .font-black { font-weight: 900; }
         #adminModal { z-index: 100; }
         
-        /* Анімація для точки на кнопці Переваги */
-        @keyframes pulse-indigo {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(99, 102, 241, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        /* Стили для карусели отзывов */
+        .reviews-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100vw;
+            height: 500px;
+            overflow: visible; /* Чтобы отзывы не обрезались по бокам */
         }
-        .animate-pulse-custom { animation: pulse-indigo 2s infinite; }
+        
+        .review-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 40px;
+            border: 1px solid #f1f5f9; /* gray-100 */
+            width: 380px;
+            text-align: left;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%) scale(0.85);
+            opacity: 0.3;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            user-select: none;
+            z-index: 10;
+        }
+        
+        /* Центральный "главный" отзыв */
+        .review-card.main {
+            transform: translateY(-50%) scale(1);
+            opacity: 1;
+            z-index: 30;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08);
+            width: 420px;
+        }
+        
+        /* Боковые отзывы */
+        .review-card.side {
+            z-index: 20;
+            cursor: pointer;
+        }
+        
+        .review-card.left { left: 5%; opacity: 0.8; transform: translateY(-50%) scale(0.9) translateX(0); }
+        .review-card.right { right: 5%; opacity: 0.8; transform: translateY(-50%) scale(0.9) translateX(0); }
+
+        /* Эффект при наведении на боковые */
+        .review-card.side:hover { opacity: 1; transform: translateY(-50%) scale(0.92); }
+
     </style>
 </head>
 <body class="text-gray-900">
@@ -37,9 +81,9 @@
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2 relative">
-                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200 relative cursor-pointer">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200 relative cursor-default">
                     <span class="text-white font-black text-xl italic">R</span>
-                    <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0"></div>
+                    <div onclick="document.getElementById('adminModal').style.display='flex'" class="absolute inset-0 z-50 opacity-0 cursor-pointer"></div>
                 </div>
                 <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
@@ -63,13 +107,8 @@
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-16">
-        <div class="text-center mb-16">
-            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-6 py-2 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all mb-8 group">
-                <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-hover:text-indigo-600">Переваги</span>
-            </a>
-
+    <main class="py-16 overflow-visible">
+        <div class="text-center mb-16 max-w-5xl mx-auto px-4">
             <div class="block mb-4">
                 <div class="inline-block bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">№1 в Україні</div>
             </div>
@@ -77,20 +116,44 @@
             <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none uppercase italic">
                 Керуй своєю <br><span class="text-indigo-600">репутацією</span>
             </h2>
-            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto mb-8">
+            <p class="text-gray-400 text-lg font-medium max-w-xl mx-auto">
                 Професійне просування на картах. Безпечно. Швидко. З гарантією результату.
             </p>
         </div>
 
-        <div class="flex justify-center">
-            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden max-w-md w-full">
-                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8 group-hover:-rotate-6 transition-transform">
+        <div class="reviews-strip" id="reviewsCarousel">
+            
+            <div class="review-card side left" onclick="prevReview()">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://lh3.googleusercontent.com/a/ACg8ocKOXwE9pYF00803q2o9g0G0_OaF8Kz5hC3y4-3Y0_Wk4-8O0=s192-c-rg" class="w-12 h-12 rounded-2xl shadow-sm">
+                    <div>
+                        <p class="font-black text-lg">Олексій К.</p>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Клієнт • 5 звезд</p>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed">"Все круто! Замовив 10 відгуків, прийшли швидко. Рейтинг піднявся, клієнтів стало більше. Раджу!"</p>
+            </div>
+
+            <div class="review-card main">
+                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-8">
                     <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
                 <h3 class="text-3xl font-black mb-3 italic uppercase tracking-tighter">Google Карти</h3>
                 <p class="text-gray-500 text-sm mb-8 leading-relaxed">Відгуки 5★ з гарантією від видалення. Покращимо рейтинг вашого бізнесу за лічені дні.</p>
                 <a href="G.html" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-indigo-700 transition-all uppercase italic tracking-widest shadow-lg shadow-indigo-100 w-full text-center">Купити відгуки</a>
             </div>
+
+            <div class="review-card side right" onclick="nextReview()">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://lh3.googleusercontent.com/a/ACg8ocL3f8P8-qXhP9QvY5hN_S7t9E6v_7M4rD8f3_7V4JgGq2N_g=s192-c-rg" class="w-12 h-12 rounded-2xl shadow-sm">
+                    <div>
+                        <p class="font-black text-lg">Марія Д.</p>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Клієнт • 5 звезд</p>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed">"Все круто! Сервіс вогонь. Швидко, якісно і без видалень. Буду замовляти ще!"</p>
+            </div>
+
         </div>
     </main>
 
@@ -109,9 +172,49 @@
     <script>
         const API_URL = "https://review-market.onrender.com";
 
-        function toggleModal(show) {
-            document.getElementById('rechargeModal').style.display = show ? 'flex' : 'none';
+        // ЛОГИКА КАУРСЕЛИ
+        let currentReviewIndex = 0;
+        const reviews = [
+            { name: "Олексій К.", pic: "https://lh3.googleusercontent.com/a/ACg8ocKOXwE9pYF00803q2o9g0G0_OaF8Kz5hC3y4-3Y0_Wk4-8O0=s192-c-rg", text: '"Все круто! Замовив 10 відгуків, прийшли швидко. Рейтинг піднявся, клієнтів стало більше. Раджу!"' },
+            { name: "Марія Д.", pic: "https://lh3.googleusercontent.com/a/ACg8ocL3f8P8-qXhP9QvY5hN_S7t9E6v_7M4rD8f3_7V4JgGq2N_g=s192-c-rg", text: '"Все круто! Сервіс вогонь. Швидко, якісно і без видалень. Буду замовляти ще!"' },
+            { name: "Іван Б.", pic: "https://lh3.googleusercontent.com/a/ACg8ocI4s_Gf5-pM8g8-hY_Y4eX0Jb7_Gg0-v-P4=s192-c-rg", text: '"Все круто! Якість відгуків на висоті. Створені професійно, виглядають живими. Раджу всім!"' },
+            { name: "Олена М.", pic: "https://lh3.googleusercontent.com/a/ACg8ocJkR7M0E8oG9g0-t4A-G6J0_w-U4gXb4hS=s192-c-rg", text: '"Все круто! Приємно здивована швидкістю та якістю виконання. Рейтинг піднявся миттєво!"' },
+            { name: "Віктор П.", pic: "https://lh3.googleusercontent.com/a/ACg8ocHqR7M0E8oG9g0-v-P4G6J0_w-U4gXb4hS=s192-c-rg", text: '"Все круто! Дуже допомагає просуванню бізнесу. Клієнтів стало значно більше. Дякую!"' },
+            { name: "Світлана Л.", pic: "https://lh3.googleusercontent.com/a/ACg8ocKkR7M0E8oG9g0-t4A-G6J0_w-U4gXb4hS=s192-c-rg", text: '"Все круто! Професійний підхід, чудовий сервіс. Буду звертатися ще!"' },
+        ];
+
+        function nextReview() {
+            currentReviewIndex = (currentReviewIndex + 1) % reviews.length;
+            updateCarousel();
         }
+
+        function prevReview() {
+            currentReviewIndex = (currentReviewIndex - 1 + reviews.length) % reviews.length;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const leftCard = document.querySelector(".review-card.left");
+            const rightCard = document.querySelector(".review-card.right");
+            
+            const leftIndex = (currentReviewIndex - 1 + reviews.length) % reviews.length;
+            const rightIndex = (currentReviewIndex + 1) % reviews.length;
+            
+            fillCard(leftCard, reviews[leftIndex]);
+            fillCard(rightCard, reviews[rightIndex]);
+        }
+
+        function fillCard(card, data) {
+            card.querySelector('img').src = data.pic;
+            card.querySelector('.font-black.text-lg').innerText = data.name;
+            card.querySelector('.text-gray-500.text-sm').innerText = data.text;
+        }
+
+        // Авто-переключение каждые 5 секунд
+        setInterval(nextReview, 5000);
+
+        // ИНИЦИАЛИЗАЦИЯ ИНТЕРФЕЙСА (Твоя оригинальная)
+        function toggleModal(show) { document.getElementById('rechargeModal').style.display = show ? 'flex' : 'none'; }
 
         async function executeTopUp() {
             const user = JSON.parse(localStorage.getItem('rm_user'));
@@ -163,7 +266,7 @@
         }
 
         function logout() { localStorage.removeItem('rm_user'); location.reload(); }
-        window.onload = renderUser;
+        window.onload = function() { renderUser(); updateCarousel(); }
     </script>
 </body>
 </html>
