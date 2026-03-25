@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReviewMarket | Головна</title>
+    <title>ReviewMarket | Главная</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -15,98 +15,73 @@
         }
         .font-black { font-weight: 900; }
         
-        /* Анімація появи */
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Твоя плавная анимация карточек */
         .service-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
         }
         .service-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body class="text-gray-900">
 
-    <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center shadow-lg">
-                    <span class="text-white font-black text-2xl italic">R</span>
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                    <span class="text-white font-black text-xl italic">R</span>
                 </div>
-                <h1 class="font-black text-2xl tracking-tighter uppercase italic">ReviewMarket</h1>
+                <h1 class="font-black text-xl tracking-tighter uppercase italic">ReviewMarket</h1>
             </div>
             
             <div class="flex items-center gap-4">
-                <div id="balance-container" class="hidden flex items-center gap-3">
-                    <div id="user-balance" class="font-black text-indigo-600 bg-indigo-50 px-6 py-2.5 rounded-full border border-indigo-100 text-sm shadow-inner">
-                        0 ₴
-                    </div>
-                    <button onclick="adminTopUp()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all">
-                        🛠
-                    </button>
+                <div id="balance-display" class="hidden font-black text-indigo-600 bg-indigo-50 px-5 py-2 rounded-full border border-indigo-100 text-sm">
+                    0 ₴
                 </div>
-                <button id="login-btn" onclick="login()" class="bg-black text-white px-8 py-3 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-gray-800 transition-all shadow-xl shadow-gray-200">
+                <button id="login-btn" onclick="login()" class="bg-black text-white px-6 py-2 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-gray-800 transition-all">
                     Увійти
                 </button>
+                <button onclick="adminTopUp()" class="opacity-0 hover:opacity-100 transition-opacity text-[10px] font-bold text-gray-300">ADMIN</button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-20 min-h-[80vh] flex flex-col justify-center">
-        
-        <div class="text-center mb-16 fade-in">
-            <h2 class="text-6xl font-black mb-6 uppercase italic tracking-tighter leading-none">
-                Просувай свій <br> <span class="text-indigo-600">бізнес чесно.</span>
+    <main class="max-w-4xl mx-auto px-4 py-20">
+        <div class="text-center mb-16">
+            <h2 class="text-5xl font-black mb-4 uppercase italic tracking-tighter">
+                Наші <span class="text-indigo-600">Послуги</span>
             </h2>
-            <p class="text-gray-400 font-bold uppercase text-xs tracking-[0.4em]">Оберіть сервіс для старту</p>
+            <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">Оберіть сервіс для замовлення</p>
         </div>
 
-        <div class="flex justify-center fade-in" style="animation-delay: 0.2s;">
-            <a href="G.html" class="service-card group relative w-full max-w-md bg-white p-12 rounded-[60px] border border-gray-100 shadow-2xl shadow-gray-200/50 overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-indigo-50 rounded-full blur-3xl group-hover:bg-indigo-100 transition-colors"></div>
-                
-                <div class="relative z-10 text-center">
-                    <div class="inline-flex w-20 h-20 bg-indigo-600 rounded-[28px] items-center justify-center mb-8 shadow-xl shadow-indigo-200 group-hover:rotate-6 transition-transform">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                    
-                    <h3 class="text-4xl font-black mb-4 uppercase italic tracking-tighter">Google Maps</h3>
-                    <p class="text-gray-500 font-medium mb-8 leading-relaxed">Якісні та живі відгуки, що піднімуть ваш рейтинг у ТОП пошуку.</p>
-                    
-                    <div class="inline-flex items-center gap-2 bg-black text-white px-10 py-5 rounded-3xl font-black uppercase italic tracking-widest text-sm group-hover:bg-indigo-600 transition-all">
-                        Замовити
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
+        <div class="flex justify-center">
+            
+            <a href="G.html" class="service-card block w-full max-w-sm bg-white p-10 rounded-[40px] border-2 border-gray-100 text-center">
+                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-100">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black mb-2 uppercase italic tracking-tighter">Google Maps</h3>
+                <p class="text-gray-400 text-xs font-bold uppercase mb-6 tracking-widest">Відгуки • 30 ₴</p>
+                <div class="bg-gray-50 text-black py-4 rounded-2xl font-black uppercase italic tracking-widest text-[10px] group-hover:bg-black group-hover:text-white transition-all">
+                    Перейти
                 </div>
             </a>
-        </div>
 
-        <div class="mt-20 text-center text-gray-300 font-black uppercase text-[10px] tracking-[0.5em] fade-in" style="animation-delay: 0.4s;">
-            ReviewMarket © 2026 • Vinnytsia, Ukraine
         </div>
-
     </main>
 
     <script>
         const API_URL = "https://review-market.onrender.com";
 
-        // ЛОГІКА АВТОРИЗАЦІЇ (GOOGLE ИЛИ SIMPLE)
         function login() {
-            const email = prompt("Введіть ваш Email для входу:");
+            const email = prompt("Введіть ваш Email:");
             if (email) {
-                const user = { email: email, name: "Клієнт" };
-                localStorage.setItem('rm_user', JSON.stringify(user));
+                localStorage.setItem('rm_user', JSON.stringify({ email: email }));
                 checkUser();
             }
         }
@@ -115,23 +90,26 @@
             const user = JSON.parse(localStorage.getItem('rm_user'));
             if (user) {
                 document.getElementById('login-btn').classList.add('hidden');
-                document.getElementById('balance-container').classList.remove('hidden');
+                const balDisp = document.getElementById('balance-display');
+                balDisp.classList.remove('hidden');
                 
-                // Запит балансу
-                const res = await fetch(`${API_URL}/get_balance`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: user.email })
-                });
-                const data = await res.json();
-                document.getElementById('user-balance').innerText = (data.balance || 0) + " ₴";
+                try {
+                    const res = await fetch(`${API_URL}/get_balance`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: user.email })
+                    });
+                    const data = await res.json();
+                    balDisp.innerText = (data.balance || 0) + " ₴";
+                } catch(e) { console.log("Ошибка баланса"); }
             }
         }
 
+        // Твоя админка
         async function adminTopUp() {
-            const pass = prompt("Пароль адміна:");
-            const email = prompt("Email користувача:");
-            const amount = prompt("Сума поповнення:");
+            const pass = prompt("Admin Password:");
+            const email = prompt("User Email:");
+            const amount = prompt("Amount (UAH):");
 
             if(!pass || !email || !amount) return;
 
@@ -147,10 +125,10 @@
 
             const result = await response.json();
             if (result.success) {
-                alert("Успішно! Новий баланс: " + result.new_balance + " ₴");
+                alert("Готово! Новый баланс: " + result.new_balance);
                 checkUser();
             } else {
-                alert("Помилка: " + result.error);
+                alert("Ошибка: " + result.error);
             }
         }
 
