@@ -15,7 +15,6 @@
         }
         .font-black { font-weight: 900; }
         
-        /* Стиль активной карточки пакета */
         .package-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -51,26 +50,23 @@
             <h2 class="text-5xl font-black mb-4 uppercase italic tracking-tighter">
                 Google <span class="text-indigo-600">Maps</span>
             </h2>
-            <p class="text-gray-400 font-bold uppercase text-[11px] tracking-[0.3em]">Просування вашого бізнесу на картах</p>
+            <p class="text-gray-400 font-bold uppercase text-[11px] tracking-[0.3em]">Відгуки по 30 ₴ за штуку</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div id="pkg-1" onclick="selectPackage('pkg-1', 150, 'Lite (1 відгук)')" class="package-card active p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
+            <div id="pkg-1" onclick="selectPackage('pkg-1', 1, '1 відгук')" class="package-card active p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
+                <div class="text-3xl font-black mb-2 italic">30 ₴</div>
+                <div class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">1 ВІДГУК</div>
+            </div>
+
+            <div id="pkg-2" onclick="selectPackage('pkg-2', 5, '5 відгуків')" class="package-card p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
                 <div class="text-3xl font-black mb-2 italic">150 ₴</div>
-                <div class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Пакет LITE</div>
-                <div class="mt-4 text-gray-400 text-xs font-medium">1 якісний відгук <br> з гарантією</div>
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">5 ВІДГУКІВ</div>
             </div>
 
-            <div id="pkg-2" onclick="selectPackage('pkg-2', 700, 'Standard (5 відгуків)')" class="package-card p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
-                <div class="text-3xl font-black mb-2 italic">700 ₴</div>
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Пакет STANDARD</div>
-                <div class="mt-4 text-gray-400 text-xs font-medium">5 відгуків <br> від різних людей</div>
-            </div>
-
-            <div id="pkg-3" onclick="selectPackage('pkg-3', 1300, 'Pro Max (10 відгуків)')" class="package-card p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
-                <div class="text-3xl font-black mb-2 italic">1300 ₴</div>
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Пакет PRO MAX</div>
-                <div class="mt-4 text-gray-400 text-xs font-medium">10 відгуків <br> + бонусний рейтинг</div>
+            <div id="pkg-3" onclick="selectPackage('pkg-3', 10, '10 відгуків')" class="package-card p-8 bg-white border-2 border-gray-100 rounded-[40px] cursor-pointer text-center">
+                <div class="text-3xl font-black mb-2 italic">300 ₴</div>
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">10 ВІДГУКІВ</div>
             </div>
         </div>
 
@@ -79,21 +75,21 @@
                 
                 <div class="relative">
                     <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Посилання на локацію</label>
-                    <input type="text" id="target-link" placeholder="https://maps.google.com/..." class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
+                    <input type="text" id="target-link" placeholder="Вставте лінк на карти..." class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
                 </div>
 
                 <div class="relative">
                     <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Текст для відгуків</label>
-                    <textarea id="order-details" rows="4" placeholder="Напишіть ключові слова або готовий текст..." class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold"></textarea>
+                    <textarea id="order-details" rows="4" placeholder="Що мають написати люди?" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold"></textarea>
                 </div>
 
                 <div class="relative">
                     <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-4">Ваш Telegram (@username)</label>
-                    <input type="text" id="user-contact" placeholder="@pasha_vinnitsa" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
+                    <input type="text" id="user-contact" placeholder="@username" class="w-full bg-gray-50 border border-gray-100 p-5 rounded-3xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-semibold">
                 </div>
 
-                <button onclick="submitOrder()" class="w-full bg-black text-white py-6 rounded-3xl font-black uppercase italic tracking-[0.2em] text-sm hover:bg-gray-800 transition-all shadow-2xl shadow-gray-300 active:scale-95 transform">
-                    Оформити за <span id="price-tag">150</span> ₴
+                <button onclick="submitOrder()" class="w-full bg-black text-white py-6 rounded-3xl font-black uppercase italic tracking-[0.2em] text-sm hover:bg-gray-800 transition-all shadow-2xl shadow-gray-300">
+                    Оформити за <span id="price-tag">30</span> ₴
                 </button>
 
             </div>
@@ -102,36 +98,28 @@
 
     <script>
         const API_URL = "https://review-market.onrender.com";
-        let selectedPrice = 150;
-        let selectedPackageName = "Lite (1 відгук)";
+        const PRICE_PER_ONE = 30; // Новая цена
+        let selectedPrice = 30;
+        let selectedPackageName = "1 відгук";
 
-        // Функция выбора пакета
-        function selectPackage(elementId, price, name) {
-            // Убираем активный класс у всех
+        function selectPackage(elementId, count, name) {
             document.querySelectorAll('.package-card').forEach(card => {
                 card.classList.remove('active');
                 card.querySelector('.text-indigo-500')?.classList.replace('text-indigo-500', 'text-gray-400');
             });
 
-            // Добавляем текущему
             const activeCard = document.getElementById(elementId);
             activeCard.classList.add('active');
             activeCard.querySelector('.text-gray-400').classList.replace('text-gray-400', 'text-indigo-500');
 
-            // Обновляем данные
-            selectedPrice = price;
+            selectedPrice = count * PRICE_PER_ONE;
             selectedPackageName = name;
-            document.getElementById('price-tag').innerText = price;
+            document.getElementById('price-tag').innerText = selectedPrice;
         }
 
-        // Отправка заказа
         async function submitOrder() {
             const userData = JSON.parse(localStorage.getItem('rm_user'));
-            
-            if(!userData) {
-                alert("Будь ласка, спочатку авторизуйтесь на головній сторінці!");
-                return;
-            }
+            if(!userData) return alert("Авторизуйтесь!");
 
             const payload = {
                 user_email: userData.email,
@@ -143,48 +131,33 @@
                 contact: document.getElementById('user-contact').value
             };
 
-            if(!payload.target || !payload.contact) {
-                alert("Будь ласка, заповніть обов'язкові поля!");
-                return;
-            }
+            if(!payload.target || !payload.contact) return alert("Заповніть поля!");
 
-            try {
-                const response = await fetch(`${API_URL}/order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            const response = await fetch(`${API_URL}/order`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-                const result = await response.json();
-
-                if(result.success) {
-                    alert("Замовлення успішно прийнято! Перенаправляємо на головну...");
-                    window.location.href = "index.html";
-                } else {
-                    alert("Помилка: " + result.error);
-                }
-            } catch (err) {
-                alert("Сервер не відповідає. Спробуйте пізніше.");
+            const result = await response.json();
+            if(result.success) {
+                alert("Готово!");
+                window.location.href = "index.html";
+            } else {
+                alert(result.error);
             }
         }
 
-        // Получение баланса при загрузке
         window.onload = async () => {
             const user = JSON.parse(localStorage.getItem('rm_user'));
             if(user) {
-                try {
-                    const res = await fetch(`${API_URL}/get_balance`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: user.email })
-                    });
-                    const data = await res.json();
-                    document.getElementById('balance-display').innerText = (data.balance || 0) + " ₴";
-                } catch (e) {
-                    document.getElementById('balance-display').innerText = "Помилка ₴";
-                }
-            } else {
-                document.getElementById('balance-display').innerText = "Увійдіть в аккаунт";
+                const res = await fetch(`${API_URL}/get_balance`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: user.email })
+                });
+                const data = await res.json();
+                document.getElementById('balance-display').innerText = (data.balance || 0) + " ₴";
             }
         };
     </script>
