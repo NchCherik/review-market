@@ -62,10 +62,10 @@
 
     <main class="max-w-6xl mx-auto px-4 py-12 md:py-24">
         <div class="text-center mb-16">
-            <div class="inline-flex items-center gap-2 bg-white border border-gray-100 px-4 py-2 rounded-full shadow-sm mb-8">
+            <a href="Perevagi.html" class="inline-flex items-center gap-2 bg-white border border-gray-100 px-4 py-2 rounded-full shadow-sm mb-8 hover:shadow-md hover:border-indigo-100 transition-all cursor-pointer group">
                 <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-custom"></span>
-                <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">ПЕРЕВАГИ СЕРВІСУ</span>
-            </div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-gray-500 group-hover:text-indigo-600 transition-colors">ПЕРЕВАГИ СЕРВІСУ</span>
+            </a>
             
             <h2 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-[0.9] uppercase italic">
                 КЕРУЙ СВОЄЮ <br> <span class="text-indigo-600">РЕПУТАЦІЄЮ</span>
@@ -108,7 +108,6 @@
         const API_URL = "https://review-market.onrender.com";
         const CLIENT_ID = "870765995654-qp38thfph22ubnjgknabmnd3dusgueij.apps.googleusercontent.com";
 
-        // Виконання поповнення (Адмін)
         async function executeTopUp() {
             const user = JSON.parse(localStorage.getItem('rm_user'));
             const pass = document.getElementById('admPass').value;
